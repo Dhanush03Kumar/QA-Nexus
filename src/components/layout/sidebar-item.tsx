@@ -7,6 +7,7 @@ interface SidebarItemProps {
   label: string
   to: string
   isActive?: boolean
+  isCollapsed?: boolean
 }
 
 /**
@@ -22,21 +23,32 @@ interface SidebarItemProps {
  * Responsibilities:
  * - Display icon and label for navigation item
  * - Apply active styling when route matches
- * - Handle hover states for visual feedback
+ * - Provide hover states for visual feedback
  * - Navigate to specified route when clicked
+ * - Hide text label when sidebar is collapsed (icon-only mode)
  *
- * Design:
- * - Horizontal layout with icon on left, text on right
- * - Subtle hover background for non-active items
- * - Prominent accent background for active item
- * - Consistent sizing and spacing
- * - Accessible via NavLink for proper routing
+ * Design Improvements:
+ * - Enhanced active state with left border indicator
+ * - Improved hover feedback with better contrast
+ * - Consistent spacing and sizing for touch targets
+ * - Clear visual hierarchy between active and inactive states
+ * - Hide text when collapsed for icon-only sidebar mode
+ * - Accessible via NavLink for proper routing and focus management
+ *
+ * Visual Design:
+ * - Horizontal layout: Icon (left) | Text (right)
+ * - When collapsed: only icon visible (text hidden)
+ * - Active item: Left border + background tint + text emphasis
+ * - Inactive item: Subtle hover background change
+ * - Padding: Adequate touch target size (min 44x44px)
+ * - Transitions: Smooth color/background changes
  */
 export const SidebarItem = ({
   icon: Icon,
   label,
   to,
   isActive = false,
+  isCollapsed = false,
 }: SidebarItemProps) => {
   return (
     <NavLink
@@ -45,14 +57,16 @@ export const SidebarItem = ({
       className={({ isActive: isRouteActive }) =>
         `${navItemClasses.base} ${
           (isActive ?? isRouteActive)
-            ? navItemClasses.active
+            ? `${navItemClasses.active} border-l-2 border-primary pl-3`
             : navItemClasses.inactive
         }`}
     >
       <div className="flex-shrink-0 h-5 w-5">
         <Icon className="h-4 w-4" />
       </div>
-      <span className="ml-3">{label}</span>
+      {!isCollapsed && (
+        <span className="ml-3">{label}</span>
+      )}
     </NavLink>
   )
 }

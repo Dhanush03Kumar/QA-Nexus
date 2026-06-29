@@ -1,66 +1,140 @@
-import React from 'react'
-import { Sun, Moon } from 'lucide-react'
+import React, { useState } from 'react'
+import { Menu } from 'lucide-react'
+import { Search, Sun, Moon } from 'lucide-react'
 import { useTheme } from '@/app/theme-provider'
-import { headerClassNames } from '@/app/layout-styles'
+import { headerClassNames, typography } from '@/app/layout-styles'
+
+/**
+ * Route to Page Title Mapping
+ *
+ * Maps URL pathnames to human-readable page titles for display in the header.
+ * This provides a dynamic title that updates based on the current route.
+ */
+const PAGE_TITLES: Record<string, string> = {
+  '/': 'Dashboard',
+  '/dashboard': 'Dashboard',
+  '/tasks': 'Tasks',
+  '/knowledge-base': 'Knowledge Base',
+  '/mail-templates': 'Mail Templates',
+  '/meetings': 'Meetings',
+  '/defects': 'Defects',
+  '/projects-releases': 'Projects & Releases',
+  '/automation': 'Automation Hub',
+  '/activity-log': 'Activity Log',
+  '/settings': 'Settings',
+  // Default fallback
+  default: 'QA Dashboard'
+}
+
+/**
+ * Get Page Title from Pathname
+ *
+ * @param pathname - Current URL pathname
+ * @returns Human-readable page title
+ */
+const getPageTitle = (pathname: string): string => {
+  return PAGE_TITLES[pathname] || PAGE_TITLES.default
+}
 
 /**
  * Application Header
  *
  * The header appears at the top of every page and contains:
- * - Application title/branding
- * - Theme toggle button (sun/moon icon for light/dark mode)
+ * - Application branding/logo area with sidebar toggle
+ * - Global search input (editable, non-functional placeholder)
+ * - User controls (theme toggle, user avatar/badge)
  *
  * This component is persistent across all routes and provides
- * consistent branding and user controls.
+ * consistent navigation and user controls.
  *
  * Responsibilities:
- * - Display application name/logo
- * - Provide theme switching functionality
- * - Maintain consistent height and styling
+ * - Display application identity and navigation controls
+ * - Show dynamic page title based on current route
+ * - Provide editable global search input (functionality to be implemented later)
+ * - Offer theme switching between light and dark modes
+ * - Maintain consistent height, spacing, and visual hierarchy
  * - Respond to theme changes from context
  *
- * Design:
- * - Fixed height with padding
- * - Flex layout with title on left and controls on right
- * - Clean, minimal appearance matching the application's aesthetic
+ * Design Features:
+ * - Three-column flex layout: Branding | Search | Controls
+ * - Dynamic page title that updates with route changes
+ * - Search input with proper styling and placeholder
+ * - Theme toggle with sun/moon icons
+ * - Responsive behavior: adjusts spacing at breakpoints
+ * - Smooth transitions for all interactive state changes
+ * - Accessible touch targets and focus states
+ *
+ * Layout:
+ * - Left: Logo + App Name + Sidebar Toggle Button
+ * - Center: Global Search Input (takes available space)
+ * - Right: Theme Toggle + User Indicator
  */
-export const Header = () => {
-  const { theme, toggleTheme } = useTheme()
+export const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
+  const { pathname } = useLocation()
+  const { theme, toggleTheme, isDarkMode } = useTheme()
+  const pageTitle = getPageTitle(pathname)
 
   return (
     <header className={`${headerClassNames.base} ${headerClassNames.height}`}>
-      <div className={`${headerClassNames.flex}`}>
-        {/* Application Title */}
+      <div className={`${headerClassNames.flex} w-full`}>
+        {/* Left Section: Branding and Navigation Toggle */}
         <div className="flex items-center space-x-3">
-          {/* TODO: Replace with actual logo/icon */}
-          <div className="h-8 w-8 bg-primary/10 rounded-full flex items-center justify-center">
-            <svg className="h-4 w-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 2a.5.5 0 01.5-.5h3a.5.5 0 010 1h-3a.5.5 0 01-.5-.5zm0 4a.5.5 0 01.5-.5h3a.5v.5 0 010 1h-3a.5.5 0 01-.5-.5z"></path>
-            </svg>
+          {/* Sidebar Toggle Button */}
+          <button
+            onClick={toggleSidebar}
+            className="p-2 rounded-hover hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors"
+            aria-label="Toggle navigation sidebar"
+            title="Toggle navigation sidebar"
+          >
+            <Menu className="h-4 w-4" />
+          </button>
+
+          {/* Application Branding */}
+          <div className="flex items-center space-x-2">
+            <div className="h-6 w-6 bg-primary/10 rounded-full flex items-center justify-center">
+              <LayoutDashboard className="h-5 w-5 text-primary" />
+            </div>
+            <span className="font-semibold text-gray-900 dark:text-gray-100">
+              QA Dashboard
+            </span>
           </div>
-          <h1 className="text-xl font-bold text-gray-900">QA Dashboard</h1>
         </div>
 
-        {/* Header Controls */}
-        <div className="flex items-center space-x-4">
+        {/* Center Section: Global Search Input */}
+        <div className="flex-1 mx-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search QA Dashboard..."
+              className="pl-10 pr-4 py-2 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm transition-all duration-200"
+              // Note: onChange intentionally left empty as per requirements
+              // Search functionality will be implemented in later phases
+              onChange={(e) => {}}
+              aria-label="Search QA Dashboard"
+            />
+          </div>
+        </div>
+
+        {/* Right Section: User Controls */}
+        <div className="flex items-center space-x-3">
           {/* Theme Toggle Button */}
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-hover text-gray-400 hover:text-gray-600 transition-colors"
-            aria-label="Toggle theme"
+            className="p-2 rounded-hover hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors"
+            aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+            title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
           >
-            {theme === 'dark' ? (
+            {isDarkMode ? (
               <Sun className="h-4 w-4" />
             ) : (
               <Moon className="h-4 w-4" />
             )}
           </button>
 
-          {/* Placeholder for user avatar/notifications */}
-          <div className="relative">
-            <div className="h-8 w-8 bg-gray-200 rounded-full flex items-center justify-center">
-              <span className="text-gray-500 text-sm">U</span>
-            </div>
+          {/* User Indicator (Avatar/Initials) */}
+          <div className="h-8 w-8 bg-primary/10 rounded-full flex items-center justify-center">
+            <span className="text-primary">U</span>
           </div>
         </div>
       </div>

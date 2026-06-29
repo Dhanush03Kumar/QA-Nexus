@@ -18,6 +18,10 @@ import {
 import { SidebarItem } from './sidebar-item'
 import { navItems } from '@/app/nav-items'
 
+interface SidebarNavProps {
+  isCollapsed: boolean
+}
+
 /**
  * Sidebar Navigation Container
  *
@@ -31,6 +35,9 @@ import { navItems } from '@/app/nav-items'
  * - Maintain consistent styling and spacing
  * - Handle active route indication through SidebarItem
  *
+ * Props:
+ * - isCollapsed: Boolean indicating if sidebar is collapsed (for hiding text labels)
+ *
  * Design:
  * - Vertical list of navigation items
  * - Consistent height and spacing for each item
@@ -40,7 +47,7 @@ import { navItems } from '@/app/nav-items'
  * The navigation structure is defined in nav-items.ts to keep
  * configuration separate from presentation.
  */
-export const SidebarNav = () => {
+export const SidebarNav = ({ isCollapsed }: SidebarNavProps) => {
   return (
     <nav className="mt-6 space-y-1">
       {navItems.map((item) => (
@@ -49,6 +56,7 @@ export const SidebarNav = () => {
           icon={item.icon}
           label={item.label}
           to={item.path}
+          isCollapsed={isCollapsed}
         />
       ))}
     </nav>

@@ -5,42 +5,91 @@
  * used by layout components. Centralizing these values makes it
  * easy to maintain visual consistency and make global design changes.
  *
- * Each export is an object containing className strings for different
- * parts of the layout. This approach avoids duplicating utility classes
- * throughout the component code.
+ * Design System:
+ * - 8px grid spacing system (all multiples of 8px)
+ * - Consistent border-radius: rounded-md (0.375rem)
+ * - Smooth transitions for all interactive state changes
+ * - Dark mode aware color definitions
+ * - Clear typography hierarchy
+ * - Accessible touch targets (min 44x44px)
  */
 
 /* Header Styles */
 export const headerClassNames = {
   base: 'bg-white border-b border-gray/100 dark:bg-gray-800 dark:border-gray-700',
-  height: 'h-16 px-4 sm:px-6 lg:px-8',
+  height: 'h-16 px-6 sm:px-8 lg:px-12',
   flex: 'flex items-center justify-between',
 }
 
 /* Content Styles */
 export const contentClasses = {
-  base: 'flex-1 min-w-0 bg-white dark:bg-gray-900 overflow-y-auto p-6 sm:p-8 lg:p-8',
+  base: 'flex-1 min-w-0 bg-white dark:bg-gray-900 overflow-y-auto p-6 sm:p-8 lg:p-12',
 }
 
 /* Sidebar Styles */
 export const sidebarClasses = {
   base: 'flex-shrink-0',
-  transition: 'transition-transform duration-200 ease-in-out',
+  transition: 'transition-all duration-200 ease-in-out',
   width: {
-    collapsed: 'w-16',   // 4rem
-    expanded: 'w-64',    // 16rem
+    collapsed: 'w-16',   // 4rem / 64px
+    expanded: 'w-64',    // 16rem / 256px
   },
 }
 
 /* Navigation Item Styles */
 export const navItemClasses = {
-  base: 'flex items-center px-3 py-2 text-sm font-medium transition-colors duration-150',
-  active: 'bg-primary/10 text-primary rounded-md',
-  inactive: 'text-gray-400 hover:text-gray-200 dark:hover:text-gray-100',
+  base: 'flex items-center px-4 py-3 text-sm font-medium transition-colors duration-200 rounded-md',
+  active: 'bg-primary/50 text-primary-600 border-l-4 border-primary pl-3',
+  inactive: 'text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white',
   icon: 'flex-shrink-0 h-5 w-5',
 }
 
 /* Sidebar Toggle Button Styles */
 export const sidebarToggleClasses = {
-  base: 'mx-auto p-2 rounded hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300 transition-colors',
+  base: 'mx-auto p-3 transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700/50 rounded-md',
+}
+
+/* Interactive State Utilities */
+export const interactionStates = {
+  focusVisible: 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
+  hoverLift: 'hover:-translate-y-0.5 transition-transform duration-200',
+}
+
+/* Typography Scale (using Tailwind's default scale) */
+export const typography = {
+  display: 'text-3xl font-bold',
+  headline: 'text-2xl font-semibold',
+  title: 'text-xl font-medium',
+  subtitle: 'text-lg',
+  body: 'text-base',
+  caption: 'text-sm',
+  overline: 'text-xs font-medium',
+}
+
+/* Color Palette Extensions */
+export const colors = {
+  // These extend Tailwind's default palette with semantic names
+  primary: {
+    light: 'primary/10',
+    dark: 'primary/20',
+    text: 'primary-600',
+  },
+  background: {
+    light: 'white',
+    dark: 'gray-900',
+    elevated: 'gray-50',
+    darkElevated: 'gray-800',
+  },
+  text: {
+    light: 'gray-900',
+    dark: 'gray-100',
+    muted: 'gray-500',
+    darkMuted: 'gray-400',
+  },
+  border: {
+    light: 'gray-200',
+    dark: 'gray-700',
+    lightMuted: 'gray-300',
+    darkMuted: 'gray-600',
+  }
 }

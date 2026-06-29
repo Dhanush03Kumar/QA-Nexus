@@ -2,6 +2,16 @@ import React from 'react'
 import { Outlet, useRoutes } from 'react-router-dom'
 import { AppLayout } from './layout'
 import { navItems } from './nav-items'
+import { typography, contentClasses } from '@/app/layout-styles'
+import { TasksPage } from '@/features/tasks/pages/tasks.page'
+// import { KnowledgeBasePage } from '@/features/knowledge-base/pages/knowledge-base.page'
+// import { MailTemplatesPage } from '@/features/mail-templates/pages/mail-templates.page'
+// import { MeetingsPage } from '@/features/meetings/pages/meetings.page'
+// import { DefectsPage } from '@/features/defects/pages/defects.page'
+// import { ProjectsReleasesPage } from '@/features/projects/pages/projects-releases.page'
+// import { AutomationPage } from '@/features/automation/pages/automation.page'
+// import { ActivityLogPage } from '@/features/activity-log/pages/activity-log.page'
+// import { SettingsPage } from '@/features/settings/pages/settings.page'
 
 /**
  * Route Definitions
@@ -59,101 +69,114 @@ export const useAppRoutes = () => {
   ])
 }
 
+// Dashboard component (still placeholder for now)
 const DashboardPage = () => {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-      <p className="text-gray-600">Welcome to your QA Dashboard</p>
+    <div className={`${contentClasses.base}`}>
+      <h1 className={`${typography.headline} mb-4`}>Dashboard</h1>
+      <p className={`${typography.body} text-muted-foreground`}>
+        Welcome to your QA Dashboard
+      </p>
     </div>
   )
 }
 
-const TasksPage = () => {
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Tasks</h1>
-      <p className="text-gray-600">Manage your daily tasks and follow-ups</p>
-    </div>
-  )
-}
-
+// Placeholder components for other features (to be implemented in later phases)
 const KnowledgeBasePage = () => {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Knowledge Base</h1>
-      <p className="text-gray-600">Store and retrieve QA knowledge and best practices</p>
+    <div className={`${contentClasses.base}`}>
+      <h1 className={`${typography.headline} mb-4`}>Knowledge Base</h1>
+      <p className={`${typography.body} text-muted-foreground`}>
+        Store and retrieve QA knowledge and best practices
+      </p>
     </div>
   )
 }
 
 const MailTemplatesPage = () => {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Mail Templates</h1>
-      <p className="text-gray-600">Manage reusable email templates for QA communications</p>
+    <div className={`${contentClasses.base}`}>
+      <h1 className={`${typography.headline} mb-4`}>Mail Templates</h1>
+      <p className={`${typography.body} text-muted-foreground`}>
+        Manage reusable email templates for QA communications
+      </p>
     </div>
   )
 }
 
 const MeetingsPage = () => {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Meetings</h1>
-      <p className="text-gray-600">Schedule meetings and track meeting outcomes</p>
+    <div className={`${contentClasses.base}`}>
+      <h1 className={`${typography.headline} mb-4`}>Meetings</h1>
+      <p className={`${typography.body} text-muted-foreground`}>
+        Schedule meetings and track meeting outcomes
+      </p>
     </div>
   )
 }
 
 const DefectsPage = () => {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Defects</h1>
-      <p className="text-gray-600">Track and analyze software defects</p>
+    <div className={`${contentClasses.base}`}>
+      <h1 className={`${typography.headline} mb-4`}>Defects</h1>
+      <p className={`${typography.body} text-muted-foreground`}>
+        Track and analyze software defects
+      </p>
     </div>
   )
 }
 
 const ProjectsReleasesPage = () => {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Projects & Releases</h1>
-      <p className="text-gray-600">Manage QA projects and release cycles</p>
+    <div className={`${contentClasses.base}`}>
+      <h1 className={`${typography.headline} mb-4`}>Projects & Releases</h1>
+      <p className={`${typography.body} text-muted-foreground`}>
+        Manage QA projects and release cycles
+      </p>
     </div>
   )
 }
 
 const AutomationPage = () => {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Automation Hub</h1>
-      <p className="text-gray-600">Manage test automation frameworks and scripts</p>
+    <div className={`${contentClasses.base}`}>
+      <h1 className={`${typography.headline} mb-4`}>Automation Hub</h1>
+      <p className={`${typography.body} text-muted-foreground`}>
+        Manage test automation frameworks and scripts
+      </p>
     </div>
   )
 }
 
 const ActivityLogPage = () => {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Activity Log</h1>
-      <p className="text-gray-600">View audit trail of all user actions</p>
+    <div className={`${contentClasses.base}`}>
+      <h1 className={`${typography.headline} mb-4`}>Activity Log</h1>
+      <p className={`${typography.body} text-muted-foreground`}>
+        View audit trail of all user actions
+      </p>
     </div>
   )
 }
 
 const SettingsPage = () => {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Settings</h1>
-      <p className="text-gray-600">Configure application preferences</p>
+    <div className={`${contentClasses.base}`}>
+      <h1 className={`${typography.headline} mb-4`}>Settings</h1>
+      <p className={`${typography.body} text-muted-foreground`}>
+        Configure application preferences
+      </p>
     </div>
   )
 }
 
 const NotFoundPage = () => {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Page Not Found</h1>
-      <p className="text-gray-600">The page you're looking for doesn't exist.</p>
+    <div className={`${contentClasses.base}`}>
+      <h1 className={`${typography.headline} mb-4`}>Page Not Found</h1>
+      <p className={`${typography.body} text-muted-foreground`}>
+        The page you're looking for doesn't exist.
+      </p>
     </div>
   )
 }

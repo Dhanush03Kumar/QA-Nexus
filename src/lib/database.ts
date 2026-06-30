@@ -302,7 +302,8 @@ export const dbService = {
 
   // Settings operations
   async getSetting(key: string): Promise<string | undefined> {
-    return await db.settings.get(key)?.value;
+    const setting = await db.settings.get(key)
+    return setting?.value
   },
 
   async setSetting(key: string, value: string): Promise<void> {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { cva, type VariantProps } from 'class-variance-authority';
+import { cva } from 'class-variance-authority';
 import {
   DropdownMenu as RDDropdownMenu,
   DropdownMenuContent as RDDropdownMenuContent,
@@ -62,7 +62,7 @@ const DropdownMenuContent = ({
 DropdownMenuContent.displayName = 'RDDropdownMenuContent';
 
 const DropdownMenuItem = React.forwardRef<
-  HTMLElement,
+  HTMLDivElement,
   React.ComponentPropsWithoutRef<typeof RDDropdownMenuItem> & {
     className?: string;
   }
@@ -79,7 +79,7 @@ const DropdownMenuItem = React.forwardRef<
 DropdownMenuItem.displayName = 'RDDropdownMenuItem';
 
 const DropdownMenuSeparator = React.forwardRef<
-  HTMLElement,
+  HTMLDivElement,
   React.ComponentPropsWithoutRef<typeof RDDropdownMenuSeparator> & {
     className?: string;
   }
@@ -93,7 +93,7 @@ const DropdownMenuSeparator = React.forwardRef<
 DropdownMenuSeparator.displayName = 'RDDropdownMenuSeparator';
 
 const DropdownMenuCheckboxItem = React.forwardRef<
-  HTMLElement,
+  HTMLDivElement,
   React.ComponentPropsWithoutRef<typeof RDDropdownMenuCheckboxItem> & {
     className?: string;
   }

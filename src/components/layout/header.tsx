@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import { Menu } from 'lucide-react'
-import { Search, Sun, Moon } from 'lucide-react'
+import React from 'react'
+import { Menu, Search, Sun, Moon, LayoutDashboard } from 'lucide-react'
+import { useLocation } from 'react-router-dom'
 import { useTheme } from '@/app/theme-provider'
 import { headerClassNames, typography } from '@/app/layout-styles'
 

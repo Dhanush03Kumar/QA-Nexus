@@ -2,10 +2,10 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Plus, Search } from 'lucide-react';
-import { KnowledgeEntryCard } from './components/knowledge-entry-card';
-import { knowledgeBaseService } from '@/services/knowledge-base.service';
+import { KnowledgeEntryCard } from "../components/knowledge-entry-card";
+import { knowledgeBaseService } from "../services/knowledge-base.service";
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { KnowledgeEntryForm } from './components/knowledge-entry-form';
+import { KnowledgeEntryForm } from "../components/knowledge-entry-form";
 import { useToast } from '@/components/ui/toast';
 import { Input } from '@/components/ui/input';
 

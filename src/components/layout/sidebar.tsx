@@ -1,5 +1,9 @@
 import React from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import {
+  ChevronLeft,
+  ChevronRight,
+  LayoutDashboard
+} from 'lucide-react'
 import { SidebarNav } from './sidebar-nav'
 import { sidebarClasses, sidebarToggleClasses } from '@/app/layout-styles'
 

@@ -19,7 +19,7 @@ import { typography, contentClasses } from '@/app/layout-styles';
  */
 interface FuturePageProps {
   feature: string;
-  description: string;
+  description?: string;
   features?: string[];
   actionLabel?: string;
   onAction?: () => void;
@@ -135,11 +135,18 @@ export const FuturePage = ({
   onAction
 }: FuturePageProps) => {
   // Use provided description/features or get defaults based on feature name
-  const { description: featureDescription, features: featureFeatures } =
-    features && features.length > 0
-      ? { description, features }
-      : getFeatureInfo(feature);
-
+  const {
+  description: featureDescription,
+  features: featureFeatures,
+} =
+  features && features.length > 0
+    ? {
+        description:
+          description ||
+          `Manage ${feature.toLowerCase()}`,
+        features,
+      }
+    : getFeatureInfo(feature);
   return (
     <div className={`${contentClasses.base}`}>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">

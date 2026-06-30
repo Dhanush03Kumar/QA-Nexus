@@ -55,14 +55,14 @@ export const Sidebar = ({ isCollapsed, onToggle }: SidebarProps) => {
     >
       <div className="flex h-full flex-col">
         {/* Sidebar Header: Branding & Toggle Button */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex h-16 items-center justify-between px-4 border-b border-gray-200 dark:border-gray-700">
           {/* App Logo/Branding */}
           <div className="flex items-center space-x-3">
             <div className="h-8 w-8 bg-primary/10 rounded-full flex items-center justify-center">
               <LayoutDashboard className="h-5 w-5 text-primary" />
             </div>
-            <span className="hidden md:block font-semibold text-gray-900 dark:text-gray-100">
-              QA Dashboard
+            <span className={`${isCollapsed ? 'hidden' : 'block'} font-semibold text-gray-900 dark:text-gray-100`}>
+              QA Nexus
             </span>
           </div>
 

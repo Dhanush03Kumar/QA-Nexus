@@ -23,7 +23,7 @@ export const headerClassNames = {
 
 /* Content Styles */
 export const contentClasses = {
-  base: 'flex-1 min-w-0 bg-white dark:bg-gray-900 overflow-y-auto p-6 sm:p-8 lg:p-12',
+  base: 'flex-1 min-w-0 bg-white dark:bg-gray-900 overflow-y-auto px-6 sm:px-8 lg:px-12 pt-6 pb-4',
 }
 
 /* Sidebar Styles */
@@ -39,7 +39,7 @@ export const sidebarClasses = {
 /* Navigation Item Styles */
 export const navItemClasses = {
   base: 'flex items-center px-4 py-3 text-sm font-medium transition-colors duration-200 rounded-md',
-  active: 'bg-primary/50 text-primary-600 border-l-4 border-primary pl-3',
+  active: 'bg-primary/10 text-primary rounded-md',
   inactive: 'text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white',
   icon: 'flex-shrink-0 h-5 w-5',
 }
@@ -57,13 +57,13 @@ export const interactionStates = {
 
 /* Typography Scale (using Tailwind's default scale) */
 export const typography = {
-  display: 'text-3xl font-bold',
-  headline: 'text-2xl font-semibold',
-  title: 'text-xl font-medium',
-  subtitle: 'text-lg',
+  display: 'text-3xl font-bold tracking-tighter',
+  headline: 'text-2xl font-semibold tracking-tighter',
+  title: 'text-xl font-medium tracking-tight',
+  subtitle: 'text-lg tracking-tight',
   body: 'text-base',
   caption: 'text-sm',
-  overline: 'text-xs font-medium',
+  overline: 'text-xs font-medium tracking-wider',
 }
 
 /* Color Palette Extensions */
@@ -76,20 +76,20 @@ export const colors = {
   },
   background: {
     light: 'white',
-    dark: 'gray-900',
+    dark: 'gray-800', // Changed from gray-900 to improve contrast and reduce excessive darkness
     elevated: 'gray-50',
-    darkElevated: 'gray-800',
+    darkElevated: 'gray-700', // Changed from gray-800
   },
   text: {
     light: 'gray-900',
-    dark: 'gray-100',
+    dark: 'gray-50', // Changed from gray-100 to improve contrast on dark bg
     muted: 'gray-500',
     darkMuted: 'gray-400',
   },
   border: {
     light: 'gray-200',
-    dark: 'gray-700',
+    dark: 'gray-600', // Changed from gray-700 to improve contrast
     lightMuted: 'gray-300',
-    darkMuted: 'gray-600',
+    darkMuted: 'gray-500',
   }
 }

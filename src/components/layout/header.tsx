@@ -23,7 +23,7 @@ const PAGE_TITLES: Record<string, string> = {
   '/activity-log': 'Activity Log',
   '/settings': 'Settings',
   // Default fallback
-  default: 'QA Dashboard'
+  default: 'QA Nexus'
 }
 
 /**
@@ -79,10 +79,10 @@ export const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
       <div className={`${headerClassNames.flex} w-full`}>
         {/* Left Section: Branding and Navigation Toggle */}
         <div className="flex items-center space-x-3">
-          {/* Sidebar Toggle Button */}
+          {/* Sidebar Toggle Button (hamburger) - only show on mobile */}
           <button
             onClick={toggleSidebar}
-            className="p-2 rounded-hover hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors"
+            className="md:hidden p-2 rounded-hover hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors"
             aria-label="Toggle navigation sidebar"
             title="Toggle navigation sidebar"
           >
@@ -95,23 +95,23 @@ export const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
               <LayoutDashboard className="h-5 w-5 text-primary" />
             </div>
             <span className="font-semibold text-gray-900 dark:text-gray-100">
-              QA Dashboard
+              QA Nexus
             </span>
           </div>
         </div>
 
         {/* Center Section: Global Search Input */}
-        <div className="flex-1 mx-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+        <div className="flex flex-1 justify-center px-6 items-center">
+          <div className="relative w-full max-w-lg h-full flex items-center">
+            <Search className="ml-3 h-4 w-4 text-gray-400" />
             <input
               type="text"
-              placeholder="Search QA Dashboard..."
-              className="pl-10 pr-4 py-2 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm transition-all duration-200"
+              placeholder="Search QA Nexus..."
+              className="flex-1 pl-4 pr-4 py-2 h-10 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm transition-all duration-200"
               // Note: onChange intentionally left empty as per requirements
               // Search functionality will be implemented in later phases
               onChange={(e) => {}}
-              aria-label="Search QA Dashboard"
+              aria-label="Search QA Nexus"
             />
           </div>
         </div>

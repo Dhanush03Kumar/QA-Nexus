@@ -38,9 +38,9 @@ export const sidebarClasses = {
 
 /* Navigation Item Styles */
 export const navItemClasses = {
-  base: 'flex items-center px-4 py-3 text-sm font-medium transition-colors duration-200 rounded-md',
-  active: 'bg-primary/10 text-primary rounded-md',
-  inactive: 'text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white',
+  base: 'flex items-center px-4 py-3 text-sm font-medium transition-colors duration-200 rounded-md border-l-2 border-transparent',
+  active: 'bg-primary/5 text-primary border-l-2 border-primary pl-3',
+  inactive: 'text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white hover:border-l-2 hover:border-transparent',
   icon: 'flex-shrink-0 h-5 w-5',
 }
 

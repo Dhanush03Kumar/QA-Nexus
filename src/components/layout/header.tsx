@@ -1,8 +1,8 @@
 import React from 'react'
-import { Menu, Search, Sun, Moon, LayoutDashboard } from 'lucide-react'
+import { Menu, Search, Sun, Moon } from 'lucide-react'
 import { useLocation } from 'react-router-dom'
 import { useTheme } from '@/app/theme-provider'
-import { headerClassNames, typography } from '@/app/layout-styles'
+import { headerClassNames } from '@/app/layout-styles'
 
 /**
  * Route to Page Title Mapping
@@ -76,38 +76,28 @@ export const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
 
   return (
     <header className={`${headerClassNames.base} ${headerClassNames.height}`}>
-      <div className={`${headerClassNames.flex} w-full`}>
+      <div className="flex items-center w-full">
         {/* Left Section: Branding and Navigation Toggle */}
-        <div className="flex items-center space-x-3">
-          {/* Sidebar Toggle Button (hamburger) - only show on mobile */}
+        <div className="flex-shrink-0 md:flex-1 items-center space-x-3">
+          {/* Sidebar Toggle Button (hamburger) - always in DOM but visually hidden on desktop */}
           <button
             onClick={toggleSidebar}
-            className="md:hidden p-2 rounded-hover hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors"
+            className="opacity-0 pointer-events-none md:opacity-100 md:pointer-events-auto p-2 rounded-hover hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors"
             aria-label="Toggle navigation sidebar"
             title="Toggle navigation sidebar"
           >
             <Menu className="h-4 w-4" />
           </button>
-
-          {/* Application Branding */}
-          <div className="flex items-center space-x-2">
-            <div className="h-6 w-6 bg-primary/10 rounded-full flex items-center justify-center">
-              <LayoutDashboard className="h-5 w-5 text-primary" />
-            </div>
-            <span className="font-semibold text-gray-900 dark:text-gray-100">
-              QA Nexus
-            </span>
-          </div>
         </div>
 
         {/* Center Section: Global Search Input */}
-        <div className="flex flex-1 justify-center px-6 items-center">
-          <div className="relative w-full max-w-lg h-full flex items-center">
-            <Search className="ml-3 h-4 w-4 text-gray-400" />
+        <div className="flex-1 min-w-0 flex justify-center">
+          <div className="flex-1 relative max-w-[480px] sm:max-w-[520px] lg:max-w-[560px]">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             <input
               type="text"
               placeholder="Search QA Nexus..."
-              className="flex-1 pl-4 pr-4 py-2 h-10 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm transition-all duration-200"
+              className="flex-1 pl-10 pr-4 py-2 h-10 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm transition-all duration-200"
               // Note: onChange intentionally left empty as per requirements
               // Search functionality will be implemented in later phases
               onChange={(e) => {}}
@@ -117,7 +107,7 @@ export const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
         </div>
 
         {/* Right Section: User Controls */}
-        <div className="flex items-center space-x-3">
+        <div className="flex-shrink-0 md:flex-1 items-center space-x-3">
           {/* Theme Toggle Button */}
           <button
             onClick={toggleTheme}

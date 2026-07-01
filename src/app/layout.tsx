@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom'
 import { ThemeProvider } from './theme-provider'
 import { Header } from '@/components/layout/header'
 import { Sidebar } from '@/components/layout/sidebar'
-import { contentClasses } from '@/app/layout-styles'
+import { contentClasses, sidebarClasses } from '@/app/layout-styles'
 
 /**
  * Main Application Layout
@@ -47,7 +47,7 @@ export const AppLayout = () => {
     <ThemeProvider>
       <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Sidebar - Desktop */}
-        <aside className={`hidden md:block ${!isSidebarCollapsed ? 'w-64' : 'w-16'} transition-width duration-200 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700`}>
+        <aside className={`hidden md:block ${!isSidebarCollapsed ? sidebarClasses.width.expanded : sidebarClasses.width.collapsed} ${sidebarClasses.base} ${sidebarClasses.transition} bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700`}>
           <Sidebar isCollapsed={isSidebarCollapsed} onToggle={toggleSidebar} />
         </aside>
 
@@ -72,7 +72,7 @@ export const AppLayout = () => {
             onClick={toggleSidebar}
           />
           {/* Sidebar */}
-          <div className={`fixed left-0 top-0 h-full z-30 w-64 transition-transform duration-200 ${isSidebarCollapsed ? '-translate-x-full' : 'translate-x-0'} bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700`}>
+          <div className={`fixed left-0 top-0 h-full z-30 ${sidebarClasses.width.expanded} transition-transform duration-200 ${isSidebarCollapsed ? '-translate-x-full' : 'translate-x-0'} bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700`}>
             <Sidebar isCollapsed={false} onToggle={toggleSidebar} />
           </div>
         </div>

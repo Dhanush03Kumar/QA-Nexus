@@ -1,419 +1,395 @@
 # CLAUDE.md
 
-# Personal QA Workspace - Claude Development Instructions
+# QA Nexus - Personal QA Workspace
 
-You are developing a Personal QA Workspace application.
+## Mission
 
-This is a personal productivity application for a Software QA Engineer.
+You are contributing to an existing production-quality project.
 
-The application will be used only by a single user on a company laptop.
+Your job is NOT to redesign or rearchitect the application.
 
-The user is not an expert web developer.
+Your job is to implement exactly what is requested while preserving the existing architecture and design.
 
-Code readability and maintainability are extremely important.
+Think like a senior software engineer making a small pull request.
 
 ---
 
-# Project Goals
+# Project Overview
 
-The application acts as a personal QA second brain.
+QA Nexus is a Personal QA Workspace.
+
+It is a local-first productivity application built specifically for one QA Engineer.
 
 It replaces:
 
-* OneNote
-* Personal trackers
-* Sticky notes
-* Personal mail templates
-* Personal defect notes
+- Personal Notes
+- Sticky Notes
+- OneNote
+- Mail Templates
+- Meeting Notes
+- Defect Notes
+- SQL Snippets
+- Testing Knowledge
 
-The application DOES NOT replace Jira, TestRail or Confluence.
+It DOES NOT replace:
 
----
-
-# Critical Constraints
-
-## No Backend
-
-Do NOT create:
-
-* Node.js backend
-* Express server
-* NestJS server
-* REST APIs
-* GraphQL APIs
-
-No backend is allowed.
+- Jira
+- Azure DevOps
+- TestRail
+- Confluence
 
 ---
 
-## No Deployment
+# Project Principles
 
-Do NOT add:
+Always prioritize
 
-* Docker
-* Kubernetes
-* CI/CD
-* Cloud configuration
-* Deployment configuration
+1. Simplicity
+2. Maintainability
+3. Readability
+4. Consistency
 
-Application runs locally only.
+Never optimize for thousands of users.
 
----
+This application has only ONE user.
 
-## Local First
-
-All data must remain on the user's machine.
-
-Use:
-
-IndexedDB + Dexie.js
-
-only.
-
-No other database is allowed.
+Avoid enterprise architecture.
 
 ---
 
-# Approved Stack
+# Tech Stack
 
-Frontend:
+Frontend
 
-* React
-* TypeScript
-* Vite
+- React
+- TypeScript
+- Vite
 
-UI:
+UI
 
-* Tailwind CSS
-* shadcn/ui
-* Lucide Icons
+- Tailwind CSS
+- shadcn/ui
+- Lucide Icons
 
-Storage:
+Storage
 
-* IndexedDB
-* Dexie.js
+- IndexedDB
+- Dexie
 
-Forms:
+Forms
 
-* React Hook Form
-* Zod
+- React Hook Form
+- Zod
 
-Rich Text:
+Routing
 
-* Tiptap Editor
-
-Tables:
-
-* TanStack Table
-
-Routing:
-
-* React Router
+- React Router
 
 ---
 
-# Design Source
+# Design Source of Truth
 
-PNG files located inside:
+The design images located inside
 
 /designs
 
 are the source of truth.
 
-Implement screens as closely as possible to the provided designs.
+When implementing pages
 
-Follow:
+Follow the designs as closely as possible.
 
-docs/UI_NOTES.md
-
-for additional UX guidelines.
+Do not redesign the UI unless explicitly instructed.
 
 ---
 
 # Development Philosophy
 
-Prefer:
+Prefer
 
-* Readability
-* Simplicity
-* Maintainability
+- Small changes
+- Small pull requests
+- Small commits
 
-Avoid:
+Avoid
 
-* Premature optimization
-* Overengineering
-* Complex abstractions
-* Clever code
+- Massive refactoring
+- Rewriting working code
+- Unnecessary abstractions
+- Premature optimization
+- Fancy code
 
-This project is maintained by a beginner/intermediate developer.
+Always choose
 
-Code should be easy to understand.
+Simple > Clever
 
----
+Readable > Smart
 
-# Documentation Requirements
-
-This is extremely important.
-
-Every generated file must contain explanatory comments.
-
-Examples:
-
-```ts
-/**
- * TasksTable Component
- *
- * Displays all user tasks in a sortable table.
- *
- * Features:
- * - Sorting
- * - Search
- * - Row selection
- *
- * Clicking a row opens the Task Drawer.
- */
-```
+Maintainable > Generic
 
 ---
 
-Every major function must contain comments.
+# Golden Rules
 
-Example:
+## Rule 1
 
-```ts
-/**
- * Creates a new task and saves it to IndexedDB.
- *
- * Steps:
- * 1. Validate form input.
- * 2. Generate UUID.
- * 3. Add timestamps.
- * 4. Save to Dexie store.
- */
-```
+Only modify files required for the task.
+
+Never refactor unrelated code.
 
 ---
 
-Complex logic must always include inline comments.
+## Rule 2
 
-Example:
+Never rewrite an existing component unless explicitly requested.
 
-```ts
-// Filter only overdue tasks.
-// A task is overdue when:
-// - dueDate exists
-// - task is not completed
-// - dueDate is before current date
-```
+Improve it incrementally.
 
 ---
 
-# Teaching Mode
+## Rule 3
 
-While generating code:
-
-Explain:
-
-* Why a library is being used.
-* Why a component exists.
-* Why an architectural decision was made.
-
-Whenever a new feature is implemented, provide a short explanation.
-
-Example:
-
-"Created a reusable Drawer component because multiple modules require side-panel editing."
+Never rename files unless asked.
 
 ---
 
-# Folder Structure
+## Rule 4
 
-Use feature-based architecture.
-
-Example:
-
-src/
-
-app/
-components/
-features/
-hooks/
-lib/
-services/
-types/
-utils/
-
-features/
-
-dashboard/
-tasks/
-knowledge-base/
-mail-templates/
-meetings/
-defects/
-projects/
-automation/
-activity-log/
+Never move files between folders unless instructed.
 
 ---
 
-# Component Guidelines
+## Rule 5
 
-Prefer:
+Never introduce new libraries without justification.
 
-Small reusable components.
-
-Examples:
-
-Good:
-
-* TaskTable
-* TaskDrawer
-* TaskForm
-
-Avoid:
-
-Large files exceeding 300 lines whenever possible.
-
-Split components when necessary.
+Use existing project dependencies whenever possible.
 
 ---
 
-# State Management
+## Rule 6
 
-Use local component state whenever possible.
+Do not create abstractions for future possibilities.
 
-Use React Context only for:
-
-* Theme
-* Notifications
-* Global Search
-
-Do not introduce Redux or complex state libraries.
+Only abstract after the same logic appears at least three times.
 
 ---
 
-# Styling Guidelines
+## Rule 7
 
-Use:
-
-Tailwind CSS + shadcn/ui
-
-Follow existing design system.
-
-Avoid inline styles.
-
-Avoid hardcoded colors.
-
-Use Tailwind utility classes.
+Avoid generic helper functions that are only used once.
 
 ---
 
-# Forms
+## Rule 8
 
-Use:
+Do not create custom hooks unless the logic is shared across multiple components.
 
-React Hook Form + Zod
+---
 
-for all forms.
+## Rule 9
 
-Validation should always be implemented.
+Prefer local component state.
+
+Use Context only for
+
+- Theme
+- Notifications
+- Global Search
+
+Do not introduce Redux, Zustand or other state libraries.
+
+---
+
+## Rule 10
+
+Always preserve the current folder structure.
+
+---
+
+# UI Guidelines
+
+The application should feel like
+
+- Linear
+- Notion
+- Raycast
+- GitHub Desktop
+
+Characteristics
+
+- Minimal
+- Professional
+- Spacious
+- Clean
+- Fast
+
+---
+
+# Design Rules
+
+Use
+
+- 8px spacing system
+- Consistent border radius
+- Consistent typography
+- Existing color palette
+
+Avoid
+
+- Random spacing
+- Random colors
+- Random font sizes
+
+---
+
+# Components
+
+Prefer reusable components.
+
+Examples
+
+Good
+
+TaskTable
+
+TaskDrawer
+
+TaskForm
+
+PageHeader
+
+Badge
+
+DataTable
+
+Drawer
+
+Card
+
+Avoid
+
+TaskTableV2
+
+TaskTableNew
+
+TaskComponentBase
+
+UniversalManager
+
+MegaComponent
+
+---
+
+# Component Size
+
+Aim for
+
+150–250 lines
+
+Split only when it improves readability.
+
+Do NOT split components excessively.
+
+---
+
+# Styling
+
+Use
+
+Tailwind utilities
+
+Avoid
+
+Inline styles
+
+Hardcoded colors
+
+Magic numbers
+
+Duplicate utility classes
+
+---
+
+# Comments
+
+Document
+
+- Components
+- Complex functions
+- Business logic
+
+Do not comment obvious code.
+
+Comments should explain WHY not WHAT.
 
 ---
 
 # Error Handling
 
-Always handle:
+Always consider
 
-* Empty states
-* Missing data
-* Invalid imports
-* Corrupted backups
-
-Never assume data exists.
-
----
-
-# Loading States
-
-Every async operation must include:
-
-* Loading state
-* Empty state
-* Error state
-
-Examples:
-
-Loading tasks...
-
-No tasks found.
-
-Unable to load data.
-
----
-
-# Activity Logging
-
-Whenever data changes:
-
-Automatically create Activity Log entries.
-
-Examples:
-
-Task Created
-Task Updated
-Note Deleted
-Meeting Added
-
-Users cannot edit Activity Logs.
-
----
-
-# Backup
-
-Implement:
-
-Export JSON
-
-Import JSON
-
-before adding advanced features.
-
-User data is important.
-
----
-
-# Accessibility
-
-Ensure:
-
-* Keyboard navigation
-* Focus states
-* Accessible labels
-* Proper semantic HTML
+- Empty state
+- Error state
+- Loading state
+- Invalid data
+- Missing data
 
 ---
 
 # Performance
 
-Prefer simple solutions.
-
 Optimize only when necessary.
 
-Application data size is expected to remain small.
+Do NOT use
 
-Readability is more important than micro-optimizations.
+- useMemo
+- useCallback
+- memo
+
+unless there is a measurable benefit.
+
+---
+
+# Before Finishing
+
+Always
+
+- Check TypeScript errors
+- Check lint errors
+- Ensure imports are clean
+- Remove unused code
+
+---
+
+# Response Format
+
+When completing a task provide
+
+## Summary
+
+What changed
+
+## Files Modified
+
+List modified files
+
+## Why
+
+Explain architectural decisions
+
+Keep explanations short.
+
+Stop after completing the requested task.
+
+Do not continue improving unrelated parts of the application.
 
 ---
 
 # If Unsure
 
-Choose:
+Stop.
 
-Simple > Complex
+Explain the options.
 
-Readable > Clever
-
-Maintainable > Optimized
-
-Explain decisions clearly.
+Ask before making architectural decisions.

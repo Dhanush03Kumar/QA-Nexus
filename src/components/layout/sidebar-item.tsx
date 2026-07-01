@@ -57,7 +57,7 @@ export const SidebarItem = ({
       className={({ isActive: isRouteActive }) =>
         `${navItemClasses.base} ${
           (isActive ?? isRouteActive)
-            ? `${navItemClasses.active} border-l-2 border-primary pl-3`
+            ? navItemClasses.active
             : navItemClasses.inactive
         }`}
     >

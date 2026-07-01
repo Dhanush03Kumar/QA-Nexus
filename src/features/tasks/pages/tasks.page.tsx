@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
   Folder,
   AlertTriangle,
   Loader,
   CheckCircle,
-  Plus,
+  Plus
 } from 'lucide-react';
 
 export const TasksPage = () => {
@@ -90,7 +90,7 @@ export const TasksPage = () => {
         <Card className="hover:bg-muted/50 transition-colors">
           <div className="p-6">
             <div className="flex items-start gap-3">
-              <div className="flex h-8 w-8 items-center justify-center bg-primary/10 rounded-lg text-primary shrink-0">
+              <div className="flex h-8 w-8 w-8 items-center justify-center bg-primary/10 rounded-lg text-primary shrink-0">
                 <Loader className="h-4 w-4" />
               </div>
               <div className="space-y-1">
@@ -131,67 +131,69 @@ export const TasksPage = () => {
         </Card>
       </div>
 
-      {/* Filters and Table */}
-      <div className="grid gap-8 md:grid-cols-2">
-        {/* Filters Card */}
-        <Card>
-          <div className="p-6">
-            <h2 className="text-xl font-bold mb-4">Filters</h2>
-            <div className="space-y-4">
-              <div className="flex flex-wrap gap-2">
-                <span className="px-3 py-1 text-xs font-medium bg-muted rounded">
-                  Status: All
-                </span>
-                <span className="px-3 py-1 text-xs font-medium bg-muted rounded">
-                  Priority: All
-                </span>
-                <span className="px-3 py-1 text-xs font-medium bg-muted rounded">
-                  Due Date: This Week
-                </span>
-              </div>
-              <div className="text-sm text-muted-foreground">
-                Showing 24 tasks
-              </div>
+      {/* Filter Toolbar and Task Table */}
+      <div className="mt-6">
+        <div className="space-y-4">
+          {/* Filter Toolbar */}
+          <div className="flex flex-wrap items-center gap-6">
+            <div className="flex items-center gap-6 flex-wrap">
+              <span className="text-xs font-medium text-muted-foreground">Status:</span>
+              <span className="px-2 py-0.5 text-xs font-medium bg-muted rounded">All</span>
+            </div>
+            <div className="flex items-center gap-6 flex-wrap">
+              <span className="text-xs font-medium text-muted-foreground">Priority:</span>
+              <span className="px-2 py-0.5 text-xs font-medium bg-muted rounded">All</span>
+            </div>
+            <div className="flex items-center gap-6 flex-wrap">
+              <span className="text-xs font-medium text-muted-foreground">Due Date:</span>
+              <span className="px-2 py-0.5 text-xs font-medium bg-muted rounded">This Week</span>
+            </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-xs font-medium text-muted-foreground">Search:</span>
+              <input type="text" placeholder="Search tasks..." className="border border-gray-300 rounded px-2 py-0.5 w-64" />
+            </div>
+            <div className="flex items-center gap-6 flex-wrap">
+              <span className="text-xs font-medium text-muted-foreground">Sort:</span>
+              <span className="px-2 py-0.5 text-xs font-medium bg-muted rounded">Due Date ▼</span>
             </div>
           </div>
-        </Card>
 
-        {/* Tasks Table Card */}
-        <Card>
-          <div className="p-6">
-            <h2 className="text-xl font-bold mb-4">Tasks</h2>
-            <div className="overflow-hidden">
-              <table className="w-full text-sm text-left rtl:text-right rtl:whitespace-nowrap">
-                <thead className="text-xs font-medium text-muted-foreground">
-                  <tr>
-                    <th scope="col" className="px-4 py-3">ID</th>
-                    <th scope="col" className="px-4 py-3">Title</th>
-                    <th scope="col" className="px-4 py-3">Status</th>
-                    <th scope="col" className="px-4 py-3">Priority</th>
-                    <th scope="col" className="px-4 py-3">Due Date</th>
-                    <th scope="col" className="px-4 py-3">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  <tr>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                      #1001
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm font-medium">
-                      Login validation test
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                        Done
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                        Medium
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                      Jun 28, 2026
+          {/* Task Table */}
+          <Card>
+            <div className="p-4">
+              <h2 className="text-xl font-bold mb-4">Tasks</h2>
+              <div className="overflow-hidden">
+                <table className="w-full text-sm text-left rtl:text-right rtl:whitespace-nowrap">
+                  <thead className="text-xs font-medium text-muted-foreground">
+                    <tr>
+                      <th scope="col" className="px-4 py-3">ID</th>
+                      <th scope="col" className="px-4 py-3">Title</th>
+                      <th scope="col" className="px-4 py-3">Status</th>
+                      <th scope="col" className="px-4 py-3">Priority</th>
+                      <th scope="col" className="px-4 py-3">Due Date</th>
+                      <th scope="col" className="px-4 py-3">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    <tr>
+                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                        #1001
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap text-sm font-medium">
+                        Login validation test
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                          Done
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                          Medium
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap text-gray-500">
+                        Jun 28, 2026
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap text-sm text-muted-foreground">
                       Edit
@@ -246,11 +248,11 @@ export const TasksPage = () => {
                     </td>
                   </tr>
                 </tbody>
-                               
               </table>
             </div>
-          </div>
-        </Card>
+            </div>
+          </Card>
+        </div>
       </div>
     </div>
   );

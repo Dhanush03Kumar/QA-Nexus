@@ -1,62 +1,69 @@
 # Changes Summary
 
-## Sprint 2.2 – Tasks Workspace UI
+## Sprint 2.3 – Tasks Layout Refinement
 
 ## Objective
-Transform the Tasks page skeleton into a polished, production-quality UI using realistic placeholder data only.
+Refine the Tasks page layout only. Do not add any new functionality or business logic.
 
 ## Changes Made
 Modified only:
-- `src/features/tasks/pages/tasks.page.tsx` – Redesigned the Tasks page with improved visual hierarchy, realistic placeholder QA data, icons, badges, typography, and spacing. No functionality (state, hooks, forms, CRUD, etc.) was added.
+- `src/features/tasks/pages/tasks.page.tsx` – Restructured the layout to have:
+  1. Header (title, subtitle, disabled New Task button)
+  2. Four summary cards (unchanged from Sprint 2.2)
+  3. A horizontal filter toolbar with placeholder controls (Status, Priority, Due Date, Search, Sort)
+  4. A task table using the full width below the toolbar
 
 ## Design Improvements
 
-### 1. Page Layout
-- Outer container uses `space-y-8 p-6` for consistent spacing with the Dashboard.
-- Header section includes a folder icon, title ("Tasks Overview"), subtitle ("Manage your QA tasks"), and a disabled "New Task" button (consistent with Sprint 2.1 skeleton).
-- Responsive grid layout adapts to screen sizes (similar to Dashboard patterns).
+### 1. Layout Structure
+- Maintained the outer container with `space-y-8 p-6` for consistency with the Dashboard.
+- Kept the header section exactly as in Sprint 2.2.
+- Kept the four summary cards grid (4 cards on large screens, 2 on medium, 1 on small) unchanged.
+- Added a new section below the summary cards for the filter toolbar and task table.
 
-### 2. Summary Cards (KPI-like)
-- Four cards displaying key metrics:
-  - **Total Tasks**: 24 (+2% vs last week)
-  - **Open Tasks**: 5 (-1% vs last week)
-  - **In Progress**: 10 (+5% vs last week)
-  - **Completed**: 9 (-3% vs last week)
-- Each card uses the `Card` component with an icon (Folder, AlertTriangle, Loader, CheckCircle), label, value, and subtle trend text.
-- Hover effect (`hover:bg-muted/50 transition-colors`) for visual feedback (non-interactive).
-- Styled with appropriate typography: labels as `text-sm font-medium text-muted-foreground`, values as `text-2xl font-bold tracking-tight`, trends as `text-xs text-green-500` or `text-xs text-red-500`.
+### 2. Filter Toolbar
+- A horizontal flex container that wraps on smaller screens.
+- Contains placeholder controls for:
+  - Status: "All" (in a muted badge)
+  - Priority: "All" (in a muted badge)
+  - Due Date: "This Week" (in a muted badge)
+  - Search: a text input with placeholder (non-functional)
+  - Sort: "Due Date ▼" (in a muted badge)
+- All controls are visual placeholders only (no interactivity, no state).
+- Uses subtle styling (`bg-muted`, `text-xs`, `font-medium`) to match the placeholder aesthetic.
 
-### 3. Filters Placeholder
-- Single card labeled "[Filters]" with placeholder badge-like chips:
-  - Status: All (secondary badge)
-  - Priority: All (secondary badge)
-  - Due Date: This Week (secondary badge)
-- Demonstrates how filter controls might appear without implementing actual functionality.
+### 3. Task Table
+- Placed directly below the filter toolbar, taking the full width of its container.
+- Uses the same placeholder task data as in Sprint 2.2 (three rows of sample tasks).
+- Table structure:
+  - Header: ID, Title, Status, Priority, Due Date, Actions
+  - Each row contains placeholder data with styled badges for Status and Priority.
+  - The Actions column contains non-interactive text labels (e.g., "Edit").
+- Table uses the same styling as in Sprint 2.2 (borders, text colors, etc.) but now spans the full width.
 
-### 4. Task Table Placeholder
-- Single card showing a mock table with column headers and three rows of realistic placeholder task data.
-- Columns: ID, Title, Status, Priority, Due Date, Actions.
-- Status and Priority values use badge-like styling (e.g., "Done" as green background, "Medium" as yellow background).
-- Dates and text use muted foreground colors for placeholder data.
-- Actions column shows non-interactive text labels (e.g., "Edit", "Delete") to indicate possible actions without actual interactivity.
+### 4. Responsiveness
+- The layout adapts to screen sizes:
+  - On large screens (lg): 4 summary cards in a row, then the filter toolbar and table each taking full width in a vertical stack.
+  - On medium screens (md): 2 summary cards per row, then the filter toolbar and table full width.
+  - On small screens: 1 summary card per row, then the filter toolbar (which may wrap) and table full width.
+- The filter toolbar uses `flex-wrap` so items wrap to the next line on smaller screens.
+- The table container uses `overflow-hidden` to handle overflow gracefully.
 
-## Visual Consistency
-- Follows the existing design system: uses Tailwind utility classes consistent with Dashboard and other pages.
-- Colors: Uses semantic colors (green for positive trends, red for negative trends, muted foreground for secondary text).
-- Typography: Uses `text-sm`, `text-base`, `text-xl`, `text-2xl`, `text-3xl` with appropriate font weights (`font-medium`, `font-bold`, `tracking-tight`).
-- Spacing: Consistent use of `space-y-*`, `gap-*`, and padding (`p-4`, `p-6`, `p-8`) to match the Dashboard layout.
-- Icons: Uses Lucide icons (Folder, AlertTriangle, Loader, CheckCircle, Plus) imported from `lucide-react`.
-- Components: Built exclusively from existing shared UI components (`Card`, `Button`, `Badge`) and primitive HTML elements (no custom components beyond those already present).
+### 5. Visual Consistency
+- Continues to use only existing shared UI components (`Card`, `Button`, `Badge`) and primitive HTML elements.
+- No new components or custom styling beyond utility classes.
+- Colors, typography, and spacing follow the same design system as the Dashboard.
+- Interactive states (like hover on cards) are preserved from the Card component.
 
 ## Verification
 - ✅ Build succeeds: `npm run build` completes without errors.
 - ✅ No new functionality added: The page remains purely presentational with zero state, hooks, event handlers, or API calls.
 - ✅ No modifications to other files: All other files in `src/features/tasks/` and elsewhere remain untouched.
-- ✅ Follows Sprint 2.2 constraints: No CRUD, forms, dialogs, state, hooks, services, APIs, localStorage, IndexedDB, search, filter, sort, or pagination logic.
+- ✅ Follows Sprint 2.3 constraints: No CRUD, forms, dialogs, state, hooks, services, APIs, localStorage, IndexedDB, search, filter, sort, or pagination logic.
 - ✅ Uses only existing shared UI components and icons.
 
 ## Files Modified
-1. `src/features/tasks/pages/tasks.page.tsx` – Complete rewrite to implement polished UI skeleton.
+1. `src/features/tasks/pages/tasks.page.tsx` – Complete rewrite to implement the refined layout.
 
 ## Files Left Untouched
 - `src/features/tasks/README.md`
@@ -65,6 +72,3 @@ Modified only:
 - `src/features/tasks/pages/task-table.tsx`
 - `src/features/tasks/services/task.service.ts`
 - All other project files (pages, components, styles, configs, etc.)
-
-## Outcome
-The Tasks page now presents a professional, Dashboard‑like appearance with realistic placeholder data, ready for future implementation of functionality in later sprints.

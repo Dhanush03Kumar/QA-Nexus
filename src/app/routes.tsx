@@ -4,6 +4,7 @@ import { typography, contentClasses } from '@/app/layout-styles'
 import { TasksPage } from '@/features/tasks/pages/tasks.page'
 import { KnowledgeBasePage } from '@/features/knowledge-base/pages/knowledge-base.page'
 import { FuturePage } from '@/components/ui/future-page'
+import { DashboardPage } from '@/pages/dashboard/DashboardPage'
 
 /**
  * Route Definitions
@@ -55,18 +56,6 @@ export const useAppRoutes = () => {
       ],
     },
   ])
-}
-
-// Dashboard component (still placeholder for now)
-const DashboardPage = () => {
-  return (
-    <div className={`${contentClasses.base}`}>
-      <h1 className={`${typography.headline} mb-4`}>Dashboard</h1>
-      <p className={`${typography.body} text-muted-foreground`}>
-        Welcome to your QA Dashboard
-      </p>
-    </div>
-  )
 }
 
 // Placeholder components for other features (to be implemented in later phases)

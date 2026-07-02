@@ -1,13 +1,17 @@
-# Sprint 4.1 – Mail Templates Skeleton
+# Sprint 6.1 – Defects Skeleton
 
 ## Objective
-Page structure only. No business logic, realistic data, or polish.
+Create the Defects page UI only.
 
 ## Allowed
-MailTemplatesPage, existing components, placeholder sections.
+- One page component
+- Static placeholder defects
+- Existing UI components
+- Responsive layout
+- Disabled controls
 
 ## Not allowed
-CRUD, APIs, editor, templates, search, filters, LocalStorage, IndexedDB, business logic, dashboard/sidebar/header changes.
+CRUD, APIs, IndexedDB, React Query, search/filter logic, dialogs, editing, analytics, charts, business logic.
 
 ## Definition of Done
-Page renders, responsive, placeholder sections only, build succeeds. Stop.
+- Page renders, Responsive, Realistic QA defect data, Disabled controls only, Build succeeds, Stop

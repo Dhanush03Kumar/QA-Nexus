@@ -1,13 +1,13 @@
-# Sprint 2.5 – Task Dialog UI
+# Sprint 3.1 – Knowledge Base Skeleton
 
 ## Objective
-Task dialog UI only. Display the existing Task Form inside a dialog.
+Knowledge Base page structure only. No business logic, no realistic data, no polish.
 
 ## Allowed
-Existing Tasks page, existing Task Form, Dialog/Sheet component, responsive layout.
+Knowledge Base page, reusable cards if needed, existing UI components.
 
 ## Not allowed
-CRUD, validation, React Hook Form, Zod, state persistence, APIs, LocalStorage, IndexedDB, business logic, sidebar/header/layout changes, new libraries.
+CRUD, APIs, LocalStorage, search, filters, editor functionality, business logic, dashboard/sidebar/header changes, new libraries.
 
 ## Definition of Done
-Task dialog opens from New/Edit buttons, Task Form displays correctly, responsive, build succeeds. Stop.
+Page renders, responsive, placeholder sections only, build succeeds. Stop.

@@ -1,13 +1,13 @@
-# Sprint 3.1 – Knowledge Base Skeleton
+# Sprint 4.1 – Mail Templates Skeleton
 
 ## Objective
-Knowledge Base page structure only. No business logic, no realistic data, no polish.
+Page structure only. No business logic, realistic data, or polish.
 
 ## Allowed
-Knowledge Base page, reusable cards if needed, existing UI components.
+MailTemplatesPage, existing components, placeholder sections.
 
 ## Not allowed
-CRUD, APIs, LocalStorage, search, filters, editor functionality, business logic, dashboard/sidebar/header changes, new libraries.
+CRUD, APIs, editor, templates, search, filters, LocalStorage, IndexedDB, business logic, dashboard/sidebar/header changes.
 
 ## Definition of Done
 Page renders, responsive, placeholder sections only, build succeeds. Stop.

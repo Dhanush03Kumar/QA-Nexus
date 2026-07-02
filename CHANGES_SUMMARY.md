@@ -87,3 +87,12 @@
 - Build succeeds: `npm run build` completes without errors.
 - No new functionality added: the page remains purely presentational with zero state, hooks, event handlers, or API calls.
 - Follows all sprint constraints: no CRUD, forms, dialogs, state, hooks, services, APIs, localStorage, IndexedDB, search, filter, sort, or pagination logic.
+-- 
+##Sprint 2.5
+
+Status: Deferred
+
+Reason:
+Project currently does not contain a shared Dialog component.
+Task postponed until the shared Dialog UI primitive is added.
+No code changes made.

@@ -8,6 +8,7 @@ import { DashboardPage } from '@/pages/dashboard/DashboardPage'
 import { MailTemplatesPage } from '@/features/mail-templates/pages/mail-templates.page'
 import { MeetingsPage } from '@/features/meetings/pages/meetings.page'
 import { DefectsPage } from '@/features/defects/pages/defects.page'
+import { ProjectsReleasesPage } from '@/features/projects-releases/pages/projects-releases.page'
 
 export const useAppRoutes = () => {
   return useRoutes([
@@ -21,7 +22,7 @@ export const useAppRoutes = () => {
         { path: 'mail-templates', element: <MailTemplatesPage /> },
         { path: 'meetings', element: <MeetingsPage /> },
         { path: 'defects', element: <DefectsPage /> },
-        { path: 'projects-releases', element: <FuturePage feature="Projects & Releases" /> },
+        { path: 'projects-releases', element: <ProjectsReleasesPage /> },
         { path: 'automation', element: <FuturePage feature="Automation Hub" /> },
         { path: 'activity-log', element: <FuturePage feature="Activity Log" /> },
         { path: '*', element: <NotFoundPage /> },

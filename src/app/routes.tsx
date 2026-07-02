@@ -7,6 +7,7 @@ import { FuturePage } from '@/components/ui/future-page'
 import { DashboardPage } from '@/pages/dashboard/DashboardPage'
 import { MailTemplatesPage } from '@/features/mail-templates/pages/mail-templates.page'
 import { MeetingsPage } from '@/features/meetings/pages/meetings.page'
+import { DefectsPage } from '@/features/defects/pages/defects.page'
 
 export const useAppRoutes = () => {
   return useRoutes([
@@ -19,7 +20,7 @@ export const useAppRoutes = () => {
         { path: 'knowledge-base', element: <KnowledgeBasePage /> },
         { path: 'mail-templates', element: <MailTemplatesPage /> },
         { path: 'meetings', element: <MeetingsPage /> },
-        { path: 'defects', element: <FuturePage feature="Defects" /> },
+        { path: 'defects', element: <DefectsPage /> },
         { path: 'projects-releases', element: <FuturePage feature="Projects & Releases" /> },
         { path: 'automation', element: <FuturePage feature="Automation Hub" /> },
         { path: 'activity-log', element: <FuturePage feature="Activity Log" /> },

@@ -20,7 +20,7 @@ const selectTriggerVariants = cva(
   }
 );
 
-interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'onChange'> {
+interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   variant?: VariantProps<typeof selectTriggerVariants>['variant'];
   className?: string;
   onValueChange?: (value: string) => void;

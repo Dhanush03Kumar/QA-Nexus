@@ -155,18 +155,18 @@ class QAWorkspaceDB extends Dexie {
 
   constructor() {
     super('qa-workspace-db');
-    this.version(1).stores({
-      tasks: '++id, title, priority, status, dueDate, favorite, createdAt, updatedAt',
-      knowledgeEntries: '++id, title, category, tags, favorite, createdAt, updatedAt',
-      mailTemplates: '++id, templateName, category, favorite, createdAt, updatedAt',
-      meetings: '++id, meetingName, date, createdAt, updatedAt',
-      meetingActionItems: '++id, title, meetingReference, status, priority, dueDate, createdAt, updatedAt',
-      defects: '++id, defectId, summary, project, severity, status, createdAt, updatedAt',
-      projects: '++id, projectName, active, createdAt, updatedAt',
-      releases: '++id, releaseName, plannedDate, actualDate, createdAt, updatedAt',
-      automationItems: '++id, title, type, createdAt, updatedAt',
-      activityLogs: '++id action, entityType, entityId, timestamp',
-      settings: '++key'
+    this.version(3).stores({
+      tasks: 'id,title,priority,status,dueDate,favorite,createdAt,updatedAt',
+      knowledgeEntries: 'id,title,category,tags,favorite,createdAt,updatedAt',
+      mailTemplates: 'id,templateName,category,favorite,createdAt,updatedAt',
+      meetings: 'id,meetingName,date,createdAt,updatedAt',
+      meetingActionItems: 'id,title,meetingReference,status,priority,dueDate,createdAt,updatedAt',
+      defects: 'id,defectId,summary,project,severity,status,createdAt,updatedAt',
+      projects: 'id,projectName,active,createdAt,updatedAt',
+      releases: 'id,releaseName,plannedDate,actualDate,createdAt,updatedAt',
+      automationItems: 'id,title,type,createdAt,updatedAt',
+      activityLogs: 'id,action,entityType,entityId,timestamp',
+      settings: 'key'
     });
 
     // Define types for table properties (this helps with TypeScript)

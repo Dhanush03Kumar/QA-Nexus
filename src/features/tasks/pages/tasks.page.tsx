@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import {
   Folder,
   AlertTriangle,
@@ -9,8 +8,49 @@ import {
   CheckCircle,
   Plus
 } from 'lucide-react';
+import { taskService } from '@/features/tasks/services/task.service';
+import { Task } from '@/lib/database';
+import { TaskForm } from '@/features/tasks/components/task-form';
 
 export const TasksPage = () => {
+  const [tasks, setTasks] = React.useState<Task[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(true);
+  const [error, setError] = React.useState<string | null>(null);
+  const [showTaskForm, setShowTaskForm] = React.useState(false);
+
+  const fetchTasks = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await taskService.getTasks();
+      setTasks(data.tasks);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Unknown error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSave = async (taskData: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>) => {
+    try {
+      await taskService.createTask(taskData);
+      setShowTaskForm(false);
+      await fetchTasks(); // refresh list
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed to create task');
+    }
+  };
+
+  React.useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  // Compute stats from tasks
+  const totalTasks = tasks.length;
+  const openTasks = tasks.filter(t => t.status !== 'completed').length;
+  const inProgressTasks = tasks.filter(t => t.status === 'in-progress').length;
+  const completedTasks = tasks.filter(t => t.status === 'completed').length;
+
   return (
     <div className="space-y-8 p-6">
       {/* Header */}
@@ -31,7 +71,7 @@ export const TasksPage = () => {
         <div className="flex items-center space-x-3">
           <Button
             variant="outline"
-            aria-disabled="true"
+            onClick={() => setShowTaskForm(true)}
             className="whitespace-nowrap"
           >
             <Plus className="mr-2 h-4 w-4" />
@@ -54,7 +94,7 @@ export const TasksPage = () => {
                   Total Tasks
                 </p>
                 <p className="text-2xl font-bold tracking-tight">
-                  24
+                  {totalTasks}
                 </p>
                 <p className="text-sm text-green-500">
                   vs last week
@@ -76,7 +116,7 @@ export const TasksPage = () => {
                   Open Tasks
                 </p>
                 <p className="text-2xl font-bold tracking-tight">
-                  5
+                  {openTasks}
                 </p>
                 <p className="text-sm text-red-500">
                   vs last week
@@ -98,7 +138,7 @@ export const TasksPage = () => {
                   In Progress
                 </p>
                 <p className="text-2xl font-bold tracking-tight">
-                  10
+                  {inProgressTasks}
                 </p>
                 <p className="text-sm text-blue-500">
                   vs last week
@@ -120,7 +160,7 @@ export const TasksPage = () => {
                   Completed
                 </p>
                 <p className="text-2xl font-bold tracking-tight">
-                  9
+                  {completedTasks}
                 </p>
                 <p className="text-sm text-green-500">
                   vs last week
@@ -176,78 +216,52 @@ export const TasksPage = () => {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    <tr>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                        #1001
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm font-medium">
-                        Login validation test
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                          Done
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                          Medium
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                        Jun 28, 2026
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-muted-foreground">
-                        Edit
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                        #1002
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm font-medium">
-                        API error handling
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                          In Progress
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                          High
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                        Jul 2, 2026
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-muted-foreground">
-                        Edit
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                        #1003
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm font-medium">
-                        UI regression suite
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-                          Todo
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">
-                          Low
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                        Jul 5, 2026
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-muted-foreground">
-                        Edit
-                      </td>
-                    </tr>
+                    {loading ? (
+                      <tr>
+                        <td colSpan={6} className="px-4 py-3 text-center text-muted-foreground">
+                          Loading...
+                        </td>
+                      </tr>
+                    ) : error ? (
+                      <tr>
+                        <td colSpan={6} className="px-4 py-3 text-center text-muted-foreground">
+                          Error: {error}
+                        </td>
+                      </tr>
+                    ) : tasks.length === 0 ? (
+                      <tr>
+                        <td colSpan={6} className="px-4 py-3 text-center text-muted-foreground">
+                          No tasks found.
+                        </td>
+                      </tr>
+                    ) : (
+                      tasks.map((task) => (
+                        <tr key={task.id}>
+                          <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                            #{task.id.substring(0, 4)}
+                          </td>
+                          <td className="px-4 py-3 whitespace-nowrap text-sm font-medium">
+                            {task.title}
+                          </td>
+                          <td className="px-4 py-3 whitespace-nowrap">
+                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBgColor(task.status)} ${getStatusTextColor(task.status)}`}>
+                              {formatStatus(task.status)}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 whitespace-nowrap">
+                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getPriorityBgColor(task.priority)} ${getPriorityTextColor(task.priority)}`}>
+                              {formatPriority(task.priority)}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                            {task.dueDate ? task.dueDate.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : ''}
+                          </td>
+                          <td className="px-4 py-3 whitespace-nowrap text-sm text-muted-foreground">
+                            Edit
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -262,46 +276,53 @@ export const TasksPage = () => {
                 {/* Title */}
                 <div className="space-y-1">
                   <p className="text-sm font-medium text-muted-foreground">Title</p>
-                  <p className="font-medium">Login validation test</p>
+                  <p className="font-medium">{tasks[0]?.title || ''}</p>
                 </div>
                 {/* Status */}
                 <div className="space-y-1">
                   <p className="text-sm font-medium text-muted-foreground">Status</p>
-                  <span className="px-2 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded-full">
-                    Done
-                  </span>
+                  {tasks[0]?.status && (
+                    <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${getStatusBgColor(tasks[0].status)} ${getStatusTextColor(tasks[0].status)}`}>
+                      {formatStatus(tasks[0].status)}
+                    </span>
+                  )}
                 </div>
                 {/* Priority */}
                 <div className="space-y-1">
                   <p className="text-sm font-medium text-muted-foreground">Priority</p>
-                  <span className="px-2 py-0.5 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">
-                    Medium
-                  </span>
+                  {tasks[0]?.priority && (
+                    <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${getPriorityBgColor(tasks[0].priority)} ${getPriorityTextColor(tasks[0].priority)}`}>
+                      {formatPriority(tasks[0].priority)}
+                    </span>
+                  )}
                 </div>
                 {/* Due Date */}
                 <div className="space-y-1">
                   <p className="text-sm font-medium text-muted-foreground">Due Date</p>
-                  <p className="text-sm">Jun 28, 2026</p>
-                </div>
-                {/* Assignee */}
-                <div className="space-y-1">
-                  <p className="text-sm font-medium text-muted-foreground">Assignee</p>
-                  <p className="text-sm">Alex Morgan</p>
+                  <p className="text-sm">
+                    {tasks[0]?.dueDate ? tasks[0].dueDate.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : ''}
+                  </p>
                 </div>
                 {/* Tags */}
                 <div className="space-y-1">
                   <p className="text-sm font-medium text-muted-foreground">Tags</p>
                   <div className="flex flex-wrap gap-1">
-                    <span className="px-2 py-0.5 text-xs font-medium bg-muted rounded">UI</span>
-                    <span className="px-2 py-0.5 text-xs font-medium bg-muted rounded">Validation</span>
-                    <span className="px-2 py-0.5 text-xs font-medium bg-muted rounded">Form</span>
+                    {tasks[0]?.tags?.map((tag, index) => (
+                      <span key={index} className="px-2 py-0.5 text-xs font-medium bg-muted rounded">
+                        {tag}
+                      </span>
+                    )) || (
+                      <>
+                        {/* Empty state for tags */}
+                      </>
+                    )}
                   </div>
                 </div>
                 {/* Description */}
                 <div className="space-y-1">
                   <p className="text-sm font-medium text-muted-foreground">Description</p>
                   <p className="text-sm text-muted-foreground">
-                    Verify that the login form correctly validates email and password fields and shows appropriate error messages.
+                    {tasks[0]?.description || ''}
                   </p>
                 </div>
               </div>
@@ -309,6 +330,69 @@ export const TasksPage = () => {
           </Card>
         </div>
       </div>
+
+      {/* Task Form Modal / Drawer */}
+      {showTaskForm && (
+        <TaskForm
+          onClose={() => setShowTaskForm(false)}
+          onSave={handleSave}
+        />
+      )}
     </div>
   );
 };
+
+// Helper functions to keep same styling as original (hardcoded values)
+function getStatusBgColor(status: string): string {
+  switch (status) {
+    case 'todo': return 'bg-gray-100';
+    case 'in-progress': return 'bg-blue-100';
+    case 'blocked': return 'bg-yellow-100';
+    case 'completed': return 'bg-green-100';
+    default: return 'bg-gray-100';
+  }
+}
+
+function getStatusTextColor(status: string): string {
+  switch (status) {
+    case 'todo': return 'text-gray-800';
+    case 'in-progress': return 'text-blue-800';
+    case 'blocked': return 'text-yellow-800';
+    case 'completed': return 'text-green-800';
+    default: return 'text-gray-800';
+  }
+}
+
+function getPriorityBgColor(priority: string): string {
+  switch (priority) {
+    case 'low': return 'bg-indigo-100';
+    case 'medium': return 'bg-yellow-100';
+    case 'high': return 'bg-red-100';
+    case 'critical': return 'bg-red-200'; // approximate
+    default: return 'bg-yellow-100';
+  }
+}
+
+function getPriorityTextColor(priority: string): string {
+  switch (priority) {
+    case 'low': return 'text-indigo-800';
+    case 'medium': return 'text-yellow-800';
+    case 'high': return 'text-red-800';
+    case 'critical': return 'text-red-800';
+    default: return 'text-yellow-800';
+  }
+}
+
+function formatStatus(status: string): string {
+  switch (status) {
+    case 'todo': return 'To Do';
+    case 'in-progress': return 'In Progress';
+    case 'blocked': return 'Blocked';
+    case 'completed': return 'Done';
+    default: return status;
+  }
+}
+
+function formatPriority(priority: string): string {
+  return priority.charAt(0).toUpperCase() + priority.slice(1);
+}

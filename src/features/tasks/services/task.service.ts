@@ -3,57 +3,55 @@ import { db, dbService, Task } from '@/lib/database';
 export const taskService = {
   // Get all tasks with optional filtering
   async getTasks({
-    status,
-    priority,
-    tags,
-    search,
-    limit,
-    offset
+    statusF,
+    priorityF,
+    tagsF,
+    searchF,
+    limitF,
+    offsetF
   }: {
-    status?: string;
-    priority?: string;
-    tags?: string[];
-    search?: string;
-    limit?: number;
-    offset?: number;
+    statusF?: string;
+    priorityF?: string;
+    tagsF?: string[];
+    searchF?: string;
+    limitF?: number;
+    offsetF?: number;
   } = {}): Promise<{ tasks: Task[]; total: number }> {
-    let query = db.tasks;
-
-    // Apply filters
-    if (status) {
-      query = query.filter((task) => task.status === status);
+    let q = db.tasks as any;
+    if (statusF) {
+      q = q.filter((t: Task) => t.status === statusF);
     }
-    if (priority) {
-      query = query.filter((task) => task.priority === priority);
+    if (priorityF) {
+      q = q.filter((t: Task) => t.priority === priorityF);
     }
-    if (tags && tags.length > 0) {
-      query = query.filter((task) =>
-        task.tags &&
-        tags.some(tag => task.tags?.includes(tag))
+    if (tagsF && tagsF.length > 0) {
+      q = q.filter((t: Task) =>
+        t.tags &&
+        t.tags.some((tag: string) => tagsF.includes(tag))
       );
     }
-    if (search) {
-      const lowerSearch = search.toLowerCase();
-      query = query.filter((task) =>
-        task.title.toLowerCase().includes(lowerSearch) ||
-        task.description?.toLowerCase().includes(lowerSearch) ||
-        task.notes?.toLowerCase().includes(lowerSearch)
+    if (searchF) {
+      const lowerSearch = searchF.toLowerCase();
+      q = q.filter((t: Task) =>
+        t.title.toLowerCase().includes(lowerSearch) ||
+        t.description?.toLowerCase().includes(lowerSearch) ||
+        t.notes?.toLowerCase().includes(lowerSearch)
       );
     }
 
     // Get total count for pagination
-    const total = await query.count();
+    const total = await q.count();
 
     // Apply pagination
-    if (offset !== undefined) {
-      query = query.offset(offset);
+    if (offsetF !== undefined) {
+      q = q.offset(offsetF);
     }
-    if (limit !== undefined) {
-      query = query.limit(limit);
+    if (limitF !== undefined) {
+      q = q.limit(limitF);
     }
 
     // Sort by createdAt descending (newest first)
-    const tasks = await query.reverse().sortBy('createdAt');
+    const tasks = await q.reverse().sortBy('createdAt');
 
     return { tasks, total };
   },
@@ -147,50 +145,6 @@ export const taskService = {
     }
 
     await this.updateTask(id, { favorite: !task.favorite });
-  },
-
-  const priorityOrder: Record<string, number> = {
-  critical: 4,
-  high: 3,
-  medium: 2,
-  low: 1
-};
-
-// Get tasks for today (due today or no due date)
-  async getTodayTasks(): Promise<Task[]> {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
-
-    const tasks = await db.tasks
-      .filter((task) =>
-        (!task.dueDate ||
-         (task.dueDate >= today && task.dueDate < tomorrow)) &&
-        task.status !== 'completed'
-      )
-      .sortBy('priority'); // Sort by priority (custom sort needed)
-
-    // Custom sort for priority: critical > high > medium > low
-    return tasks.sort((a, b) => {
-      return (priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0);
-    });
-  },
-
-  // Get overdue tasks
-  async getOverdueTasks(): Promise<Task[]> {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    return await db.tasks
-      .filter((task) =>
-        task.dueDate &&
-        task.dueDate < today &&
-        task.status !== 'completed'
-      )
-      .sortBy('dueDate');
   }
 };
 

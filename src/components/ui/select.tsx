@@ -1,21 +1,8 @@
 import * as React from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuGroup,
-  DropdownMenuLabel,
-  DropdownMenuCheckboxItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-} from '@/components/ui/dropdown-menu';
 
 const selectTriggerVariants = cva(
-  'inline-flex items-center justify-between whitespace-nowrap rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+  'flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
   {
     variants: {
       variant: {
@@ -33,134 +20,70 @@ const selectTriggerVariants = cva(
   }
 );
 
-const selectContentVariants = cva(
-  'min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
-  {
-    variants: {
-      align: {
-        start: 'justify-start',
-        end: 'justify-end',
-        center: 'justify-center',
-      },
-    },
-    defaultVariants: {
-      align: 'start',
-    },
-  }
-);
-
-interface SelectProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'onChange'> {
   variant?: VariantProps<typeof selectTriggerVariants>['variant'];
   className?: string;
+  onValueChange?: (value: string) => void;
+  placeholder?: string;
 }
 
-const Select = React.forwardRef<HTMLDivElement, SelectProps>(
-  ({ className, variant, children, ...props }, ref) => (
-    <DropdownMenuTrigger asChild>
-      <div
-        className={selectTriggerVariants({ variant, className })}
+const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
+  ({ className, variant, children, onValueChange, onChange, placeholder, value, defaultValue, ...props }, ref) => {
+    const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      onChange?.(event);
+      onValueChange?.(event.target.value);
+    };
+
+    const shouldShowPlaceholder = placeholder && (value === undefined || value === '' || value === null);
+
+    return (
+      <select
         ref={ref}
+        className={selectTriggerVariants({ variant, className })}
+        onChange={handleChange}
+        value={value}
+        defaultValue={defaultValue}
         {...props}
       >
+        {shouldShowPlaceholder ? <option value="">{placeholder}</option> : null}
         {children}
-        <ChevronDown className="ml-2 h-4 w-4" />
-      </div>
-    </DropdownMenuTrigger>
-  )
+      </select>
+    );
+  }
 );
 Select.displayName = 'Select';
 
-const SelectValue = React.forwardRef<
-  HTMLElement,
-  React.ComponentPropsWithoutRef<'span'> & { className?: string; placeholder?: string }
->(({ className, placeholder, children, ...props }, ref) => {
-  return (
-    <span
-      className={`flex h-10 w-full items-center justify-between text-sm truncate select-none ${className}`}
-      ref={ref}
-      {...props}
-    >
-      {children ?? placeholder}
-    </span>
-  );
-});
+const SelectValue = ({ children, placeholder }: { children?: React.ReactNode; placeholder?: string }) => (
+  <>{children ?? (placeholder ? <option value="">{placeholder}</option> : null)}</>
+);
 SelectValue.displayName = 'SelectValue';
 
-const SelectItem = React.forwardRef<
-  HTMLElement,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuItem> & { className?: string }
->(({ className, children, ...props }, ref) => (
-  <DropdownMenuItem
-    className={`
-      relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50
-      ${className}
-    `}
-    ref={ref}
-    {...props}
-  >
-    {children}
-  </DropdownMenuItem>
-));
+const SelectItem = React.forwardRef<HTMLOptionElement, React.OptionHTMLAttributes<HTMLOptionElement>>(
+  ({ children, ...props }, ref) => (
+    <option ref={ref} {...props}>
+      {children}
+    </option>
+  )
+);
 SelectItem.displayName = 'SelectItem';
 
-const SelectGroup = React.forwardRef<
-  HTMLElement,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuGroup> & { className?: string; title?: string }
->(({ className, title, children, ...props }, ref) => (
-  <DropdownMenuGroup
-    className={className}
-    ref={ref}
-    {...props}
-  >
-    {title && (
-      <DropdownMenuGroup>
-        <DropdownMenuLabel>{title}</DropdownMenuLabel>
-      </DropdownMenuGroup>
-    )}
-    {children}
-  </DropdownMenuGroup>
-));
+const SelectGroup = ({ children }: { children: React.ReactNode }) => <>{children}</>;
 SelectGroup.displayName = 'SelectGroup';
 
-const SelectSeparator = React.forwardRef<
-  HTMLElement,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuSeparator> & { className?: string }
->(({ className, ...props }, ref) => (
-  <DropdownMenuSeparator
-    className={`-my-1 h-px bg-muted ${className}`}
-    ref={ref}
-    {...props}
-  />
-));
+const SelectSeparator = () => null;
 SelectSeparator.displayName = 'SelectSeparator';
 
-const SelectContent = React.forwardRef<
-  HTMLElement,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuContent> & { className?: string; align?: 'start' | 'end' | 'center' }
->(({ className, align = 'start', children, ...props }, ref) => (
-  <DropdownMenuContent
-    align={align}
-    className={selectContentVariants({ align, className })}
-    ref={ref}
-    {...props}
-  />
-));
+const SelectContent = ({ children }: { children: React.ReactNode }) => <>{children}</>;
 SelectContent.displayName = 'SelectContent';
 
-const SelectLabel = React.forwardRef<
-  HTMLElement,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuLabel> & { className?: string }
->(({ className, children, ...props }, ref) => (
-  <DropdownMenuLabel
-    className={`px-2 py-1.5 text-sm font-medium ${className}`}
-    ref={ref}
-    {...props}
-  />
-));
+const SelectLabel = ({ children }: { children: React.ReactNode }) => <>{children}</>;
 SelectLabel.displayName = 'SelectLabel';
+
+const SelectTrigger = Select;
 
 export {
   Select,
+  SelectTrigger,
   SelectValue,
   SelectItem,
   SelectGroup,

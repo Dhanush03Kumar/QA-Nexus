@@ -1,76 +1,52 @@
-# Sprint 8.1 — Activity Log Skeleton
+# Sprint 9.2B — Wrap Existing TaskForm in Dialog
 
 ## Objective
+Use the reusable Dialog component added in Sprint 9.1.1.
 
-Create a UI-only skeleton for the Activity Log feature.
+## Files to modify
+- src/features/tasks/pages/task-table.tsx
 
-This sprint is only for visual structure.
-No business logic, APIs, IndexedDB, React Query, localStorage, dialogs, exports, pagination, filtering logic, or timeline calculations.
+## Changes
 
----
+1. Wrap the existing TaskForm with:
+   - DialogRoot
+   - DialogContent
 
-## Requirements
+2. Reuse the existing state that currently controls opening the TaskForm.
+   - Do NOT create new state.
+   - Do NOT create new handlers.
 
-Build a page containing:
+3. Keep the existing New Task button behavior.
+   - Clicking "New Task" should still perform exactly the same action.
+   - The only difference is that the TaskForm appears inside DialogContent instead of wherever it currently renders.
 
-- Header
-- Subtitle
-- Disabled Search input
-- Disabled Activity Type filter
-- Disabled Date Range filter
-- Disabled Export button
-- Responsive list/timeline of realistic QA activity entries
-- Static placeholder data only
-- Consistent styling with all previously completed modules
+4. Do not modify TaskForm.
 
----
+5. Do not modify services.
 
-## Rules
+6. Do not modify database logic.
 
-- Reuse existing shared UI components.
-- Do not create reusable ActivityCard components.
-- Keep everything inside activity-log.page.tsx.
-- No CRUD.
-- No dialogs.
-- No state.
-- No hooks.
-- No services.
-- No storage.
-- No APIs.
+7. Do not add React Hook Form.
 
----
+8. Do not add Zod.
 
-## Files to Create
+9. Do not redesign the UI.
 
-src/features/activity-log/pages/activity-log.page.tsx
+10. Stop after the dialog opens successfully.
 
----
+## Files not to touch
 
-## Files to Modify
+- src/features/tasks/components/task-form.tsx
+- src/lib/*
+- src/features/tasks/services/*
+- src/components/ui/*
+- Any other feature
 
-src/app/routes.tsx
+## Verification
 
-Replace:
-
-<FuturePage feature="Activity Log" />
-
-with
-
-<ActivityLogPage />
-
----
-
-## Files NOT to Modify
-
-Everything else.
-
----
-
-## Definition of Done
-
-- Page renders successfully.
-- Route works.
-- Uses static placeholder data.
-- Layout matches the design language of all previous feature skeletons.
-- Responsive.
-- Zero business logic.
+- Clicking "New Task" opens the Dialog.
+- TaskForm is rendered inside DialogContent.
+- Closing the dialog restores the previous behavior.
+- No CRUD logic added.
+- No form changes.
+- Stop after this.

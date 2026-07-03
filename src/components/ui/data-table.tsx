@@ -1,16 +1,14 @@
 import * as React from 'react';
-import { Filter, Search, Loader2, Trash2, Check, ChevronUp, ChevronDown } from 'lucide-react';
-import { useState, useMemo, useCallback } from 'react';
+import { Search, Loader2, ChevronUp, ChevronDown } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { DropdownMenu } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useDispose } from '@/hooks/use-dispose';
 
 interface DataTableColumn<T> {
   accessorKey: string;
-  header: string;
+  header: React.ReactNode;
   cell?: (row: T) => React.ReactNode;
   sortable?: boolean;
   className?: string;
@@ -18,7 +16,7 @@ interface DataTableColumn<T> {
 
 interface DataTableProps<T> {
   data: T[];
-  columns: DataColumn<T>[];
+  columns: DataTableColumn<T>[];
   loading?: boolean;
   emptyMessage?: string;
   showSelection?: boolean;
@@ -35,64 +33,44 @@ export const DataTable = <T extends { id: string }>({
   showSelection = false,
   onSelectionChange,
   onDelete,
-  onEdit,
 }: DataTableProps<T>) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(
-    null
-  );
+  const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
-  // Dispose effect to clean up subscriptions if needed
-  useDispose(() => {
-    // Cleanup logic would go here if needed
-  }, []);
-
   const sortedData = useMemo(() => {
-    let sortedData = [...data];
+    let filteredData = [...data];
 
-    // Apply search filter
-    if (searchQuery) {
-      const searchableFields = columns
-        .map((col) => col.accessorKey)
-        .filter((key): key is keyof T => typeof key === 'string');
-
-      searchedData = data.filter((item) =>
-        searchableFields.some((key) =>
-          String(item[key as keyof T])
+    if (searchQuery.trim()) {
+      const lowerQuery = searchQuery.toLowerCase();
+      filteredData = filteredData.filter((item) =>
+        columns.some((column) =>
+          String(item[column.accessorKey as keyof T] ?? '')
             .toLowerCase()
-            .includes(searchQuery.toLowerCase())
+            .includes(lowerQuery)
         )
       );
-    } else {
-      searchedData = data;
     }
 
-    // Apply sorting
     if (sortConfig) {
       const { key, direction } = sortConfig;
-      searchedData.sort((a, b) => {
+      filteredData = [...filteredData].sort((a, b) => {
         const aValue = a[key as keyof T];
         const bValue = b[key as keyof T];
 
         if (typeof aValue === 'string' && typeof bValue === 'string') {
-          return direction === 'asc'
-            ? aValue.localeCompare(bValue)
-            : bValue.localeCompare(aValue);
+          return direction === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
         }
 
-        // Handle numbers, dates, etc.
         const numA = Number(aValue);
         const numB = Number(bValue);
-
-        if (!isNaN(numA) && !isNaN(numB)) {
+        if (!Number.isNaN(numA) && !Number.isNaN(numB)) {
           return direction === 'asc' ? numA - numB : numB - numA;
         }
 
-        const dateA = new Date(aValue as any).getTime();
-        const dateB = new Date(bValue as any).getTime();
-
-        if (!isNaN(dateA) && !isNaN(dateB)) {
+        const dateA = new Date(aValue as string).getTime();
+        const dateB = new Date(bValue as string).getTime();
+        if (!Number.isNaN(dateA) && !Number.isNaN(dateB)) {
           return direction === 'asc' ? dateA - dateB : dateB - dateA;
         }
 
@@ -100,38 +78,21 @@ export const DataTable = <T extends { id: string }>({
       });
     }
 
-    return searchedData;
-  }, [data, searchQuery, sortConfig]);
+    return filteredData;
+  }, [columns, data, searchQuery, sortConfig]);
 
-  const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
-      setSelectedIds(sortedData.map((item) => item.id));
-    } else {
-      setSelectedIds([]);
-    }
-
-    onSelectionChange?.(selectedIds);
+  const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const nextIds = event.target.checked ? sortedData.map((item) => item.id) : [];
+    setSelectedIds(nextIds);
+    onSelectionChange?.(nextIds);
   };
 
-  const handleToggleSelect = (id: string, e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
-      setSelectedIds((prev) => [...prev, id]);
-    } else {
-      setSelectedIds((prev) => prev.filter((itemId) => itemId !== id));
-    }
-
-    onSelectionChange?.(selectedIds);
-  };
-
-  const handleDelete = async (id: string) => {
-    if (onDelete) {
-      try {
-        await onDelete(id);
-      } catch (error) {
-        console.error('Error deleting item:', error);
-        // TODO: Show error toast/notification
-      }
-    }
+  const handleToggleSelect = (id: string, event: React.ChangeEvent<HTMLInputElement>) => {
+    const nextIds = event.target.checked
+      ? [...selectedIds, id]
+      : selectedIds.filter((itemId) => itemId !== id);
+    setSelectedIds(nextIds);
+    onSelectionChange?.(nextIds);
   };
 
   return (
@@ -139,15 +100,14 @@ export const DataTable = <T extends { id: string }>({
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-3">
           {showSelection && (
-            <div className="flex items-center">
+            <div className="flex items-center gap-2">
               <Checkbox
-                checked={selectedIds.length === sortedData.length && sortedData.length > 0}
-                indeterminate={selectedIds.length > 0 && selectedIds.length < sortedData.length}
-                onCheckedChange={handleSelectAll}
+                checked={selectedIds.length > 0 && selectedIds.length === sortedData.length}
+                onChange={handleSelectAll}
                 aria-label="Select all"
               />
               <span className="text-sm text-muted-foreground">
-                {selectedItemsCount} of {sortedData.length} selected
+                {selectedIds.length} of {sortedData.length} selected
               </span>
             </div>
           )}
@@ -157,7 +117,7 @@ export const DataTable = <T extends { id: string }>({
             <Input
               placeholder="Search..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(event) => setSearchQuery(event.target.value)}
               className="pl-10 pr-3"
               aria-label="Search table"
             />
@@ -166,32 +126,17 @@ export const DataTable = <T extends { id: string }>({
 
         <div className="flex items-center gap-2">
           {showSelection && selectedIds.length > 0 && (
-            <button
+            <Button
+              variant="outline"
+              size="sm"
               onClick={() => {
-                // Handle bulk delete
-                Promise.all(selectedIds.map(id => onDelete?.(id))).finally(() => {
+                void Promise.all(selectedIds.map((id) => onDelete?.(id))).finally(() => {
                   setSelectedIds([]);
                   onSelectionChange?.([]);
                 });
               }}
-              className="btn btn-ghost btn-sm text-destructive hover:bg-destructive/10"
-              disabled={loading}
             >
               Delete Selected
-            </button>
-          )}
-
-          {showSelection && selectedIds.length > 0 && (
-            <Button variant="outline" size="sm" onClick={() => {
-              // Handle bulk actions
-            }}>
-              Actions
-            </Button>
-          )}
-
-          {!showSelection && (
-            <Button variant="outline" size="sm">
-              Actions
             </Button>
           )}
         </div>
@@ -213,34 +158,35 @@ export const DataTable = <T extends { id: string }>({
                 {showSelection && (
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground w-4">
                     <Checkbox
-                      checked={selectedIds.length === sortedData.length && sortedData.length > 0}
-                      indeterminate={selectedIds.length > 0 && selectedIds.length < sortedData.length}
-                      onCheckedChange={handleSelectAll}
+                      checked={selectedIds.length > 0 && selectedIds.length === sortedData.length}
+                      onChange={handleSelectAll}
                       aria-label="Select all"
                     />
                   </th>
                 )}
                 {columns.map((column) => (
                   <th
-                    key={column.accessorKey}
-                    className={`px-4 py-3 text-left text-xs font-medium text-muted-foreground ${column.className} ${
-                      sortable ? 'cursor-pointer hover:bg-muted/50 transition-colors' : ''
+                    key={String(column.accessorKey)}
+                    className={`px-4 py-3 text-left text-xs font-medium text-muted-foreground ${column.className ?? ''} ${
+                      column.sortable ? 'cursor-pointer hover:bg-muted/50 transition-colors' : ''
                     }`}
                     onClick={column.sortable ? () => {
                       const direction =
                         sortConfig?.key === column.accessorKey && sortConfig.direction === 'asc'
                           ? 'desc'
                           : 'asc';
-                      setSortConfig({ key: column.accessorKey, direction });
+                      setSortConfig({ key: String(column.accessorKey), direction });
                     } : undefined}
                   >
                     {column.header}
                     {column.sortable && (
                       <span className="ml-1 h-4 w-4 opacity-50">
                         {sortConfig?.key === column.accessorKey ? (
-                          sortConfig.direction === 'asc' ?
-                            <ChevronUp className="h-4 w-4" /> :
+                          sortConfig.direction === 'asc' ? (
+                            <ChevronUp className="h-4 w-4" />
+                          ) : (
                             <ChevronDown className="h-4 w-4" />
+                          )
                         ) : (
                           <>
                             <ChevronUp className="h-4 w-4 opacity-0" />
@@ -260,27 +206,24 @@ export const DataTable = <T extends { id: string }>({
                     <td className="px-4 py-4 text-left w-4">
                       <Checkbox
                         checked={selectedIds.includes(item.id)}
-                        onCheckedChange={(e) => handleToggleSelect(item.id, e)}
+                        onChange={(event) => handleToggleSelect(item.id, event)}
                         aria-label={`Select item ${item.id}`}
                       />
                     </td>
                   )}
                   {columns.map((column) => (
-                    <td
-                      key={`${item.id}-${column.accessorKey}`}
-                      className={`px-4 py-4 text-sm ${column.className}`}
-                    >
-                      {column.cell ? column.cell(item) : (
-                        // Handle different data types for display
-                        ((value) => {
+                    <td key={`${item.id}-${column.accessorKey}`} className={`px-4 py-4 text-sm ${column.className ?? ''}`}>
+                      {column.cell ? (
+                        column.cell(item)
+                      ) : (
+                        (() => {
+                          const value = item[column.accessorKey as keyof T];
                           if (value === null || value === undefined) return '-';
                           if (value instanceof Date) return value.toLocaleDateString();
-                          if (typeof value === 'boolean') return <Badge variant={variant} size="xs">{value ? 'Yes' : 'No'}</Badge>;
-                          if (Array.isArray(value)) return value.map((v, i) => (
-                            <span key={i} className="inline-block mb-1">{v}{i < value.length - 1 ? ', ' : ''}</span>
-                          ));
+                          if (typeof value === 'boolean') return <Badge variant="secondary">{value ? 'Yes' : 'No'}</Badge>;
+                          if (Array.isArray(value)) return value.map((entry, index) => <span key={index} className="inline-block mb-1">{entry}{index < value.length - 1 ? ', ' : ''}</span>);
                           return String(value);
-                        })(item[column.accessorKey as keyof T])
+                        })()
                       )}
                     </td>
                   ))}

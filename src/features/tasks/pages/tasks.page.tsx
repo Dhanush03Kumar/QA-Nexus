@@ -57,7 +57,7 @@ export const TasksPage = () => {
                   24
                 </p>
                 <p className="text-sm text-green-500">
-                  +2% vs last week
+                  vs last week
                 </p>
               </div>
             </div>
@@ -79,7 +79,7 @@ export const TasksPage = () => {
                   5
                 </p>
                 <p className="text-sm text-red-500">
-                  -10% vs last week
+                  vs last week
                 </p>
               </div>
             </div>
@@ -101,7 +101,7 @@ export const TasksPage = () => {
                   10
                 </p>
                 <p className="text-sm text-blue-500">
-                  +5% vs last week
+                  vs last week
                 </p>
               </div>
             </div>
@@ -123,7 +123,7 @@ export const TasksPage = () => {
                   9
                 </p>
                 <p className="text-sm text-green-500">
-                  +1% vs last week
+                  vs last week
                 </p>
               </div>
             </div>

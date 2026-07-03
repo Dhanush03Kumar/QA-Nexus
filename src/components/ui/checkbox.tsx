@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { Check } from 'lucide-react';
 
 const checkboxVariants = cva(
   'relative h-4 w-4 shrink-0 cursor-pointer border-[2px] border-primary rounded-sm transition-[background-color,border-color] disabled:cursor-not-disabled disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:border-primary',
@@ -22,12 +21,14 @@ const checkboxVariants = cva(
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   variant?: VariantProps<typeof checkboxVariants>['variant'];
   className?: string;
+  onCheckedChange?: (checked: boolean) => void;
 }
 
 const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ className, variant, checked, defaultChecked, onCheckedChange, ...props }, ref) => {
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      onCheckedChange?.(e.target.checked);
+  ({ className, variant, checked, defaultChecked, onCheckedChange, onChange, ...props }, ref) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      onChange?.(event);
+      onCheckedChange?.(event.target.checked);
     };
 
     return (

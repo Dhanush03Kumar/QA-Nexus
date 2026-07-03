@@ -149,7 +149,14 @@ export const taskService = {
     await this.updateTask(id, { favorite: !task.favorite });
   },
 
-  // Get tasks for today (due today or no due date)
+  const priorityOrder: Record<string, number> = {
+  critical: 4,
+  high: 3,
+  medium: 2,
+  low: 1
+};
+
+// Get tasks for today (due today or no due date)
   async getTodayTasks(): Promise<Task[]> {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -168,12 +175,6 @@ export const taskService = {
 
     // Custom sort for priority: critical > high > medium > low
     return tasks.sort((a, b) => {
-      const priorityOrder: Record<string, number> = {
-        critical: 4,
-        high: 3,
-        medium: 2,
-        low: 1
-      };
       return (priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0);
     });
   },
